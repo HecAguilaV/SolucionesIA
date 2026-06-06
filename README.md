@@ -40,10 +40,17 @@ PYTHONPATH=. python scripts/ingest_docs.py
 
 ### 5. Ejecutar la Aplicación
 
-Inicia la interfaz de usuario con Streamlit:
+El proyecto ahora está desacoplado en un **Backend (FastAPI)** y un **Frontend (React)**:
 
+#### A. Iniciar el Backend API:
 ```bash
-streamlit run app.py
+.venv/bin/python -m uvicorn main:app --app-dir backend --port 8000 --reload
+```
+
+#### B. Iniciar el Frontend (React + Vite):
+```bash
+cd frontend
+pnpm run dev
 ```
 
 *También puedes explorar el notebook interactivo ejecutando `jupyter notebook notebooks/demo.ipynb`.*

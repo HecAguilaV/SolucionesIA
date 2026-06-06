@@ -34,16 +34,16 @@ Chain strategy: stacked-to-main
 - [x] 2.3 Add startup event to `main.py` verifying ChromaDB vector store and SQLite database accessibility.
 
 ## Phase 3: Frontend Bootstrap
-- [ ] 3.1 Initialize React/Vite app in `frontend/` using `npx -y create-vite@latest frontend --template react`.
-- [ ] 3.2 Configure CSS variables, dark mode styling, and responsive layout in `frontend/src/index.css`.
-- [ ] 3.3 Create client API fetch utilities in `frontend/src/services/api.js`.
+- [x] 3.1 Initialize React/Vite app in `frontend/` using `npx -y create-vite@latest frontend --template react`.
+- [x] 3.2 Configure CSS variables, dark mode styling, and responsive layout in `frontend/src/index.css`.
+- [x] 3.3 Create client API fetch utilities in `frontend/src/services/api.js`.
 
 ## Phase 4: Frontend Components
-- [ ] 4.1 Create `Sidebar` component showing logo, connection status, and navigation.
-- [ ] 4.2 Create `KPICards` component displaying total products, critical alert counts, and averages.
-- [ ] 4.3 Create `AgentChat` component with messages history, typing indicators, and user input.
+- [x] 4.1 Create `Sidebar` component showing logo, connection status, and navigation.
+- [x] 4.2 Create `KPICards` component displaying total products, critical alert counts, and averages.
+- [x] 4.3 Create `AgentChat` component with messages history, typing indicators, and user input.
 
 ## Phase 5: Verification & Cleanup
-- [ ] 5.1 Verify backend APIs using curl/pytest, checking chat flow fallback and SQLite queries.
-- [ ] 5.2 Remove obsolete files: root-level `app.py` (Streamlit).
-- [ ] 5.3 Update root `README.md` with startup instructions for FastAPI backend and React frontend.
+- [x] 5.1 Verify backend APIs using curl/pytest, checking chat flow fallback and SQLite queries.
+- [x] 5.2 Remove obsolete files: root-level `app.py` (Streamlit).
+- [x] 5.3 Update root `README.md` with startup instructions for FastAPI backend and React frontend.
