@@ -8,7 +8,7 @@ from src.config.settings import DB_PATH
 # Configuración de página
 st.set_page_config(
     page_title="Agente de Inventario - OmniRetail",
-    page_icon="🤖",
+    page_icon="O",
     layout="wide"
 )
 
@@ -40,7 +40,7 @@ def ver_stock_critico():
 
 # Sidebar
 with st.sidebar:
-    st.title("📊 Panel de Control OmniRetail")
+    st.title("Panel de Control OmniRetail")
     st.markdown("---")
     st.subheader("Estado del Sistema")
     
@@ -48,14 +48,14 @@ with st.sidebar:
     has_github = bool(os.getenv("GITHUB_TOKEN"))
     has_gemini = bool(os.getenv("GOOGLE_API_KEY"))
     
-    st.write(f"GitHub Models API: {'✅' if has_github else '❌'}")
-    st.write(f"Google Gemini API: {'✅' if has_gemini else '❌'}")
+    st.write(f"GitHub Models API: {'OK' if has_github else 'Error'}")
+    st.write(f"Google Gemini API: {'OK' if has_gemini else 'Error'}")
     
     if not (has_github or has_gemini):
         st.error("Modo Offline Activo: Se usarán fallbacks SQL básicos.")
         
     st.markdown("---")
-    st.subheader("⚠️ Alertas Críticas (Stock <= 10)")
+    st.subheader("Alertas Críticas (Stock <= 10)")
     df_critico = ver_stock_critico()
     if not df_critico.empty:
         st.dataframe(df_critico, hide_index=True)
@@ -66,7 +66,7 @@ with st.sidebar:
     st.caption("Evaluación Parcial 2 - ISY0101")
 
 # Main layout
-st.title("🤖 Chat Assistant")
+st.title("Chat Assistant")
 
 # Mostrar historial de chat
 for msg in st.session_state.messages:
