@@ -53,19 +53,21 @@ def create_database():
         ('SKU-1004', 'Paraguas Compacto', 'Estacional', 8.50, 'SUP-004', 7),
         ('SKU-1005', 'Smart TV 55"', 'Electrónica', 350.00, 'SUP-005', 15),
         ('SKU-1006', 'Sopa Instantánea', 'Alimentos perecederos', 0.99, 'SUP-002', 3),
-        ('SKU-1007', 'Detergente Líquido 3L', 'Alta Rotación', 9.50, 'SUP-001', 4)
+        ('SKU-1007', 'Detergente Líquido 3L', 'Alta Rotación', 9.50, 'SUP-001', 4),
+        ('SKU-1008', 'Parca Impermeable Térmica', 'Estacional', 89.99, 'SUP-004', 8)
     ]
     cursor.executemany('INSERT OR REPLACE INTO products VALUES (?,?,?,?,?,?)', products)
 
     # Insertar Inventario Base (situaciones variadas para que el agente reaccione)
     inventory = [
-        ('SKU-1001', 25, 0, 'Viña del Mar'),  # Poco stock
+        ('SKU-1001', 8, 0, 'Viña del Mar'),    # Stock crítico (antes 25)
         ('SKU-1002', 500, 100, 'Santiago'),    # Buen stock
         ('SKU-1003', 5, 0, 'Santiago'),        # Quiebre inminente
         ('SKU-1004', 120, 0, 'Concepción'),    # Stock normal
         ('SKU-1005', 48, 5, 'Santiago'),       # Stock límite electrónica
         ('SKU-1006', 200, 50, 'Viña del Mar'), # Stock normal
-        ('SKU-1007', 45, 0, 'Concepción')      # Poco stock
+        ('SKU-1007', 3, 0, 'Concepción'),      # Stock crítico (antes 45)
+        ('SKU-1008', 4, 10, 'Temuco')          # Stock crítico nuevo
     ]
     cursor.executemany('INSERT OR REPLACE INTO inventory VALUES (?,?,?,?)', inventory)
 
