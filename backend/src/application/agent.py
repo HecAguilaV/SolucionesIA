@@ -43,8 +43,8 @@ class InventoryAgent:
             return None
             
         prompt = ChatPromptTemplate.from_messages([
-            ("system", """Eres el Agente Inteligente de Gestión de Inventario de OmniRetail.
-            Tu misión es ayudar a los jefes de tienda a tomar decisiones informadas sobre reposición de productos.
+            ("system", """Eres ALI (Agente de Logística Inteligente) de OmniRetail.
+            Tu misión es ayudar a los jefes de tienda a tomar decisiones informadas sobre logística y reposición de productos.
             
             Usa las herramientas a tu disposición para:
             1. Ver el stock y ventas (consultar_inventario, analizar_tendencias)

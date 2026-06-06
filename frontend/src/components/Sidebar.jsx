@@ -10,7 +10,7 @@ export default function Sidebar({ health, activeTab, setActiveTab }) {
       <div>
         <div className="logo-container">
           <div className="logo-icon">O</div>
-          <span className="logo-text">OmniRetail</span>
+          <span className="logo-text">OmniRetail (ALI)</span>
         </div>
 
         <ul className="menu-items">
@@ -24,7 +24,7 @@ export default function Sidebar({ health, activeTab, setActiveTab }) {
             className={`menu-item ${activeTab === 'copiloto' ? 'active' : ''}`}
             onClick={() => setActiveTab('copiloto')}
           >
-            💬 Copiloto Inventario
+            💬 Copiloto ALI
           </li>
         </ul>
       </div>

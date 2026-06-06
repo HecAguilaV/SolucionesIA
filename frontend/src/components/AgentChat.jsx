@@ -3,7 +3,7 @@ import { sendChatMessage } from '../services/api';
 
 export default function AgentChat({ setIsOfflineMode }) {
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hola, soy tu Agente de Gestión de Inventario OmniRetail. ¿En qué te puedo ayudar hoy?' }
+    { role: 'assistant', content: 'Hola, soy ALI, tu Agente de Logística Inteligente de OmniRetail. ¿En qué te puedo ayudar hoy?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);

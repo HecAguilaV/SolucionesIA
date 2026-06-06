@@ -56,8 +56,8 @@ function App() {
       <main className="main-content">
         <header className="header">
           <div className="header-title">
-            <h1>Copiloto de Logística OmniRetail</h1>
-            <p>Monitoreo inteligente de stock en tiempo real y asistente logístico</p>
+            <h1>ALI - Agente de Logística Inteligente</h1>
+            <p>Monitoreo inteligente de stock en tiempo real y asistente logístico con IA</p>
           </div>
           <button onClick={loadData} className="send-button" style={{ padding: '0.65rem 1.25rem' }}>
             🔄 Actualizar Datos
