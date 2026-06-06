@@ -52,8 +52,11 @@ Thumbs.db
 # Jupyter
 .ipynb_checkpoints/
 
-# Data files (si hay datos de prueba grandes)
+# Data files
 data/*.csv
 data/*.json
 !data/sample_*.csv
 !data/sample_*.json
+data/*.db
+data/chroma_store/
+openspec/
