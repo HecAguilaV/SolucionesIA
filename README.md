@@ -36,7 +36,7 @@ Inicia la interfaz de usuario con Streamlit:
 ```bash
 streamlit run app.py
 ```
-*También puedes explorar el notebook interactivo ejecutando `jupyter notebook demo.ipynb`.*
+*También puedes explorar el notebook interactivo ejecutando `jupyter notebook notebooks/demo.ipynb`.*
 
 ## 🏗️ Arquitectura
 El sistema sigue los principios de **Clean Architecture** (Robert C. Martin), separando claramente el dominio, casos de uso, adaptadores e infraestructura. Para más detalles, consulta `docs/arquitectura.md`.
