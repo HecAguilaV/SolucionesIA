@@ -59,6 +59,7 @@ data/*.json
 !data/sample_*.json
 data/*.db
 data/chroma_store/
+openspec/
 
 
 
