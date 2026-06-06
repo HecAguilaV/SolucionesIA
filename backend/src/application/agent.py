@@ -1,4 +1,4 @@
-from langchain.agents import create_openai_tools_agent, AgentExecutor
+from langchain_classic.agents import create_openai_tools_agent, AgentExecutor
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from src.infrastructure.llm_provider import TripleFallbackLLMProvider
 from src.memory.conversation_memory import MemoryManager

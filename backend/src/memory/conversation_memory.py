@@ -1,5 +1,5 @@
-from langchain.memory import ConversationBufferWindowMemory, ConversationSummaryMemory
-from langchain_core.memory import BaseMemory
+from langchain_classic.memory import ConversationBufferWindowMemory, ConversationSummaryMemory
+from langchain_classic.base_memory import BaseMemory
 from langchain_openai import ChatOpenAI
 from src.config.settings import MEMORY_WINDOW_SIZE
 import os

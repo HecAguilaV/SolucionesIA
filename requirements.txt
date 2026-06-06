@@ -19,8 +19,10 @@ sentence-transformers>=2.2.0
 # --- Base de datos ---
 # SQLite viene incluido en Python stdlib
 
-# --- Frontend ---
+# --- Frontend / Backend API ---
 streamlit>=1.35.0
+fastapi>=0.110.0
+uvicorn>=0.28.0
 
 # --- Datos y utilidades ---
 pandas>=2.0.0
