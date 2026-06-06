@@ -43,3 +43,15 @@ Las API públicas (especialmente en cuentas de estudiantes o gratuitas) tienen l
 
 **Justificación:**
 Emula el entorno corporativo real de un jefe de tienda o de logística, proporcionando visibilidad inmediata sobre estados críticos (ej. productos con stock <= 10) fuera del chat, pero interactuando de manera conversacional para tareas profundas.
+
+## 6. Estrategias de Planificación Dinámica (Refactorización v2)
+
+**Decisión:** Introducción de un framework multi-estrategia en `planner.py` que incluye planificación orientada a objetivos (`GoalOrientedPlanner`), jerárquica (`HierarchicalPlanner`) y reactiva (`ReactivePlanner`).
+
+**Justificación:**
+Basándonos en las directrices del módulo RA2 (IL2.3), diferentes tareas requieren distintos paradigmas de resolución:
+- **Planificación Jerárquica:** Descompone metas abstractas y complejas en niveles organizativos estructurados (HIGH/Estratégico, MEDIUM/Análisis, LOW/Operativo de herramientas). Es perfecta para análisis integrales de reabastecimiento a nivel de tienda.
+- **Planificación Reactiva:** Responde al instante ante eventos clave del entorno detectados en la consulta o el estado (ej. stock crítico o alertas climáticas) mediante reglas dinámicas, evitando latencias de LLM.
+- **Planificación Orientada a Objetivos:** Ideal para la secuenciación de herramientas tradicionales buscando alcanzar un estado final explícito.
+
+El agente analiza la consulta e invoca dinámicamente la estrategia de planificación idónea.

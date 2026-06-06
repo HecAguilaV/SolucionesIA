@@ -92,7 +92,13 @@ El agente posee autonomía mediante las siguientes herramientas:
 *   **A largo plazo (RAG):** Implementado vía `ChromaDB` con el modelo de embeddings local `all-MiniLM-L6-v2`. Las políticas de seguridad y guías climáticas son fragmentadas e ingestadas, permitiendo que las recomendaciones del agente estén ancladas ("grounded") en las reglas reales del negocio.
 
 ## 4. Planificación y Orquestación
-Siguiendo las estrategias vistas en clase, se integró el concepto del `GoalOrientedPlanner`. Ante peticiones complejas, el agente descompone la solicitud. El flujo ReAct (Reason + Act) del `AgentExecutor` le permite tomar decisiones condicionales. Por ejemplo: si `consultar_clima` detecta lluvia en Concepción, el agente ajusta (reactivamente) la recomendación de stock para paraguas y abrigos basándose en lo que recuperó a través del RAG.
+
+Siguiendo las estrategias de planificación avanzadas vistas en el módulo RA2 (IL2.3), se implementó un sistema de planificación dinámica que soporta tres modos de orquestación:
+1.  **Planificación Orientada a Objetivos (`GoalOrientedPlanner`):** Descompone la solicitud del usuario en pasos lógicos secuenciales para alcanzar el fin deseado.
+2.  **Planificación Jerárquica (`HierarchicalPlanner`):** Descompone metas complejas por niveles de abstracción (HIGH/Estratégico, MEDIUM/Análisis, LOW/Operativo de ejecución) y las prioriza correspondientemente.
+3.  **Planificación Reactiva (`ReactivePlanner`):** Responde de manera inmediata y sin consumo de tokens a eventos críticos del entorno (ej. stock bajo o alertas de clima) aplicando reglas lógicas.
+
+El agente analiza la solicitud e invoca la estrategia pertinente. A continuación, el flujo ReAct (Reason + Act) del `AgentExecutor` utiliza las herramientas y la memoria conversacional para responder de forma consistente y justificada.
 
 ## 5. Conclusión
 El Agente de Gestión de Inventario demuestra cómo la integración estructurada de LLMs con bases de datos transaccionales (SQLite) y vectoriales (ChromaDB), empaquetado bajo Clean Architecture, puede resolver problemáticas reales de negocio. La solución transita exitosamente de ser un mero chatbot a un asistente de toma de decisiones accionado por datos.

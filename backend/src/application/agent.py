@@ -2,7 +2,12 @@ from langchain_classic.agents import create_openai_tools_agent, AgentExecutor
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from src.infrastructure.llm_provider import TripleFallbackLLMProvider
 from src.memory.conversation_memory import MemoryManager
-from src.application.planner import GoalOrientedPlanner
+from src.application.planner import (
+    PlanningStrategy,
+    GoalOrientedPlanner,
+    HierarchicalPlanner,
+    ReactivePlanner
+)
 from src.tools.inventory_query import consultar_inventario
 from src.tools.trend_analyzer import analizar_tendencias
 from src.tools.weather_checker import consultar_clima
@@ -15,7 +20,11 @@ class InventoryAgent:
         # 1. Infraestructura
         self.llm_provider = TripleFallbackLLMProvider()
         self.memory_manager = MemoryManager()
-        self.planner = GoalOrientedPlanner(self.llm_provider)
+        self.planners = {
+            PlanningStrategy.GOAL_ORIENTED: GoalOrientedPlanner(self.llm_provider),
+            PlanningStrategy.HIERARCHICAL: HierarchicalPlanner(self.llm_provider),
+            PlanningStrategy.REACTIVE: ReactivePlanner(self.llm_provider)
+        }
         
         # 2. Herramientas
         self.tools = [
@@ -75,11 +84,23 @@ class InventoryAgent:
             return self.llm_provider.generate_response(user_input)
             
         # 2. Planificación (Opcional, demuestra el concepto de IL2.3)
-        if "planifica" in user_input.lower() or "estrategia" in user_input.lower():
-            plan = self.planner.generate_plan(user_input)
-            print("--- Plan Generado ---")
-            print(plan.steps[0].description)
-            print("---------------------")
+        strategy = None
+        lower_input = user_input.lower()
+        if "jerar" in lower_input:
+            strategy = PlanningStrategy.HIERARCHICAL
+        elif "reactiv" in lower_input:
+            strategy = PlanningStrategy.REACTIVE
+        elif "planifica" in lower_input or "estrategia" in lower_input or "plan" in lower_input:
+            strategy = PlanningStrategy.GOAL_ORIENTED
+            
+        if strategy:
+            planner = self.planners[strategy]
+            plan = planner.create_plan(user_input)
+            print(f"\n--- Plan Generado ({strategy.value.upper()}) ---")
+            for i, step in enumerate(plan.steps):
+                priority_info = f" [Prioridad {step.priority}]" if strategy in [PlanningStrategy.HIERARCHICAL, PlanningStrategy.REACTIVE] else ""
+                print(f"Paso {i+1}{priority_info} [{step.action}]: {step.description} -> Esperado: {step.expected_outcome}")
+            print("------------------------------------------\n")
             
         # 3. Ejecución (LangChain AgentExecutor)
         try:

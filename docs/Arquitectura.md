@@ -13,7 +13,7 @@ graph TD
 
     subgraph App ["Capa de Aplicación"]
         AE["AgentExecutor LangChain"]
-        PLAN["GoalOrientedPlanner"]
+        PLAN["Multi-Strategy Planner<br/>(Goal-Oriented / Hierarchical / Reactive)"]
     end
 
     subgraph Dominio ["Herramientas / Casos de Uso"]
@@ -52,7 +52,7 @@ graph TD
 ## Flujo de Orquestación (Cómo piensa el agente)
 
 1. **Recepción del Input**: Streamlit captura el mensaje del usuario y lo envía al `AgentExecutor`.
-2. **Planificación (Opcional)**: Si la consulta implica planificación a largo plazo, el `GoalOrientedPlanner` descompone la solicitud en pasos lógicos.
+2. **Planificación Dinámica**: Si la consulta solicita planificación, se selecciona y ejecuta la estrategia adecuada (`GoalOrientedPlanner`, `HierarchicalPlanner` o `ReactivePlanner`) basándose en palabras clave de la entrada. El planificador descompone el objetivo en pasos priorizados.
 3. **Recuperación de Contexto**: El `MemoryManager` inyecta la ventana de conversación anterior (últimos 10 mensajes) en el prompt del agente.
 4. **Ejecución y Razonamiento (ReAct)**:
     - El LLM evalúa qué herramienta usar.
