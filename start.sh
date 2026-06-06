@@ -14,6 +14,12 @@ NC='\033[0m' # Sin color
 
 echo -e "${BLUE}=== Iniciando Entorno de ALI (Agente de Logística Inteligente) ===${NC}\n"
 
+# Puertos fijos del proyecto (local + acceso por Tailscale/LAN)
+BACKEND_PORT=18050
+FRONTEND_PORT=19051
+APP_HOST="0.0.0.0"
+TAILSCALE_IP=$(tailscale ip -4 2>/dev/null | head -n 1 || true)
+
 # 1. Validar entorno virtual
 if [ ! -d ".venv" ]; then
     echo -e "${RED}[ERROR] No se encontró el entorno virtual (.venv).${NC}"
@@ -52,18 +58,18 @@ cleanup() {
 trap cleanup SIGINT SIGTERM
 
 # 4. Iniciar Backend (FastAPI)
-echo -e "${GREEN}[INFO] Iniciando servidor Backend FastAPI en segundo plano...${NC}"
-.venv/bin/python -m uvicorn main:app --app-dir backend --port 8000 --reload &
+echo -e "${GREEN}[INFO] Iniciando servidor Backend FastAPI en puerto ${BACKEND_PORT}...${NC}"
+.venv/bin/python -m uvicorn main:app --app-dir backend --host "${APP_HOST}" --port "${BACKEND_PORT}" --reload &
 BACKEND_PID=$!
 
 # Esperar un par de segundos a que levante el backend
 sleep 2
 
 # 5. Iniciar Frontend (Vite/React)
-echo -e "${GREEN}[INFO] Iniciando servidor Frontend React con pnpm...${NC}"
+echo -e "${GREEN}[INFO] Iniciando servidor Frontend React en puerto ${FRONTEND_PORT}...${NC}"
 if [ -d "frontend" ]; then
     cd frontend
-    pnpm run dev &
+    pnpm run dev --host "${APP_HOST}" --port "${FRONTEND_PORT}" &
     FRONTEND_PID=$!
     cd ..
 else
@@ -71,8 +77,12 @@ else
 fi
 
 echo -e "\n${BLUE}=== ¡Todos los servicios están arriba! ===${NC}"
-echo -e "👉 Backend API:      ${YELLOW}http://localhost:8000${NC} (Docs en /docs)"
-echo -e "👉 Frontend Web:     ${YELLOW}http://localhost:5173${NC}"
+echo -e "👉 Backend API local: ${YELLOW}http://127.0.0.1:${BACKEND_PORT}${NC} (Docs en /docs)"
+echo -e "👉 Frontend local:    ${YELLOW}http://127.0.0.1:${FRONTEND_PORT}${NC}"
+if [ ! -z "$TAILSCALE_IP" ]; then
+    echo -e "👉 Backend Tailscale: ${YELLOW}http://${TAILSCALE_IP}:${BACKEND_PORT}${NC} (Docs en /docs)"
+    echo -e "👉 Frontend Tailscale:${YELLOW}http://${TAILSCALE_IP}:${FRONTEND_PORT}${NC}"
+fi
 echo -e "👉 Jupyter Kernel:   ${YELLOW}Python (SolucionesIA Venv)${NC} (Ya registrado para tu notebook)"
 echo -e "\n${YELLOW}Presioná CTRL+C para detener todos los servidores a la vez.${NC}\n"
 

@@ -1,4 +1,3 @@
-import React from 'react';
 
 export default function Sidebar({ health, activeTab, setActiveTab }) {
   const isBackendOk = health && health.status === 'ok';

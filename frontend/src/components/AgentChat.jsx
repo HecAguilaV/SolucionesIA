@@ -1,13 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { sendChatMessage } from '../services/api';
 
-export default function AgentChat({ setIsOfflineMode }) {
-  const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hola, soy ALI, tu Agente de Logística Inteligente de OmniRetail. ¿En qué te puedo ayudar hoy?' }
-  ]);
-  const [input, setInput] = useState('');
+export default function AgentChat({ setIsOfflineMode, messages, setMessages, input, setInput }) {
   const [isLoading, setIsLoading] = useState(false);
   const chatEndRef = useRef(null);
+  const inputRef = useRef(null);
 
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -17,6 +14,10 @@ export default function AgentChat({ setIsOfflineMode }) {
     scrollToBottom();
   }, [messages, isLoading]);
 
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
@@ -25,6 +26,11 @@ export default function AgentChat({ setIsOfflineMode }) {
     setInput('');
     setMessages((prev) => [...prev, { role: 'user', content: userMessage }]);
     setIsLoading(true);
+    
+    // Mantener el cursor enfocado
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
 
     try {
       const data = await sendChatMessage(userMessage);
@@ -44,6 +50,9 @@ export default function AgentChat({ setIsOfflineMode }) {
       ]);
     } finally {
       setIsLoading(false);
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
     }
   };
 
@@ -58,7 +67,7 @@ export default function AgentChat({ setIsOfflineMode }) {
             <code>{JSON.stringify(parsed, null, 2)}</code>
           </pre>
         );
-      } catch (e) {
+      } catch {
         // Ignorar e ir al renderizado por línea
       }
     }
@@ -169,12 +178,12 @@ export default function AgentChat({ setIsOfflineMode }) {
 
       <form onSubmit={handleSubmit} className="chat-input-form">
         <input
+          ref={inputRef}
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Pregúntale al agente sobre quiebres de stock o clima..."
           className="chat-input"
-          disabled={isLoading}
         />
         <button type="submit" className="send-button" disabled={isLoading || !input.trim()}>
           Enviar

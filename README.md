@@ -48,14 +48,14 @@ Si preferís iniciar los servicios por separado en distintas terminales:
 1. **Iniciar el Backend API:**
    Inicia el servidor en [backend/main.py](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/backend/main.py):
    ```bash
-   .venv/bin/python -m uvicorn main:app --app-dir backend --port 8000 --reload
+   .venv/bin/python -m uvicorn main:app --app-dir backend --host 0.0.0.0 --port 18050 --reload
    ```
 
 2. **Iniciar el Frontend (React + Vite):**
    Entra a la carpeta [frontend/](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/frontend) e inicia el servidor con `pnpm`:
    ```bash
    cd frontend
-   pnpm run dev
+   pnpm run dev --host 0.0.0.0 --port 19051
    ```
 
 *También podés explorar e interactuar de forma aislada con el notebook interactivo abriendo [notebooks/demo.ipynb](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/notebooks/demo.ipynb) ejecutando:*

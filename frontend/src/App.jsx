@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import KPICards from './components/KPICards';
 import AgentChat from './components/AgentChat';
@@ -11,6 +11,10 @@ function App() {
   const [isOfflineMode, setIsOfflineMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [chatMessages, setChatMessages] = useState([
+    { role: 'assistant', content: 'Hola, soy ALI, tu Agente de Logística Inteligente de OmniRetail. ¿En qué te puedo ayudar hoy?' }
+  ]);
+  const [chatInput, setChatInput] = useState('');
 
   const loadData = async () => {
     try {
@@ -39,6 +43,7 @@ function App() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData();
     // Auto-refresh every 30 seconds
     const interval = setInterval(loadData, 30000);
@@ -63,6 +68,12 @@ function App() {
             🔄 Actualizar Datos
           </button>
         </header>
+
+        {error && (
+          <div style={{ backgroundColor: '#fee2e2', color: '#dc2626', padding: '1rem', borderRadius: '0.5rem', marginBottom: '1.5rem', border: '1px solid #fca5a5', fontWeight: 500 }}>
+            ⚠️ Error: {error}
+          </div>
+        )}
 
         <KPICards 
           criticalCount={criticalInventory.length} 
@@ -127,7 +138,13 @@ function App() {
                 <span>Asistente conversacional</span>
                 <span className="badge green">IA Activa</span>
               </div>
-              <AgentChat setIsOfflineMode={setIsOfflineMode} />
+              <AgentChat 
+                setIsOfflineMode={setIsOfflineMode} 
+                messages={chatMessages}
+                setMessages={setChatMessages}
+                input={chatInput}
+                setInput={setChatInput}
+              />
             </div>
           </div>
         ) : (
@@ -136,7 +153,13 @@ function App() {
               <span>Chat de Consulta de Inventario</span>
               <span className="badge green">Copiloto</span>
             </div>
-            <AgentChat setIsOfflineMode={setIsOfflineMode} />
+            <AgentChat 
+              setIsOfflineMode={setIsOfflineMode} 
+              messages={chatMessages}
+              setMessages={setChatMessages}
+              input={chatInput}
+              setInput={setChatInput}
+            />
           </div>
         )}
       </main>

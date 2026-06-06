@@ -26,29 +26,29 @@ A continuación se detalla la estructura y la relación de comunicación entre l
 
 ```mermaid
 graph TD
-    subgraph UI [Interfaces de Usuario]
-        React[React Web App (Vite)]
-        NB[Jupyter Notebook]
+    subgraph UI ["Interfaces de Usuario"]
+        React["React Web App (Vite)"]
+        NB["Jupyter Notebook"]
     end
 
-    subgraph App [Capa de Aplicación - Casos de Uso]
-        AE[AgentExecutor LangChain]
-        PLAN[GoalOrientedPlanner]
+    subgraph App ["Capa de Aplicación - Casos de Uso"]
+        AE["AgentExecutor LangChain"]
+        PLAN["GoalOrientedPlanner"]
     end
 
-    subgraph Dominio [Herramientas / Capacidad del Agente]
-        T1[consultar_inventario]
-        T2[analizar_tendencias]
-        T3[consultar_clima]
-        T4[buscar_politicas_empresa]
-        T5[escribir_reporte]
+    subgraph Dominio ["Herramientas / Capacidad del Agente"]
+        T1["consultar_inventario"]
+        T2["analizar_tendencias"]
+        T3["consultar_clima"]
+        T4["buscar_politicas_empresa"]
+        T5["escribir_reporte"]
     end
 
-    subgraph Infra [Capa de Infraestructura]
-        LLM[TripleFallbackLLMProvider]
-        SQL[(SQLite DB)]
-        VEC[(ChromaDB)]
-        MEM[MemoryManager]
+    subgraph Infra ["Capa de Infraestructura"]
+        LLM["TripleFallbackLLMProvider"]
+        SQL[("SQLite DB")]
+        VEC[("ChromaDB")]
+        MEM["MemoryManager"]
     end
 
     React -->|API Request| AE
