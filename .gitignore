@@ -60,6 +60,7 @@ data/*.json
 data/*.db
 data/chroma_store/
 openspec/
+LearningIA.md
 
 
 
