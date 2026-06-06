@@ -87,4 +87,9 @@ class InventoryAgent:
             return response["output"]
         except Exception as e:
             # Fallback en caso de error crítico del agente
-            return f"Hubo un error al procesar la solicitud con el Agente. Fallback SQL activado: {self.llm_provider.generate_response(user_input)}"
+            fallback_res = self.llm_provider.generate_response(user_input)
+            return (
+                "⚠️ **Contingencia Local Activa**\n\n"
+                "El Agente ALI no pudo procesar la solicitud usando inteligencia artificial en la nube (se detectó un fallo en el proveedor de LLM).\n\n"
+                f"{fallback_res}"
+            )

@@ -52,10 +52,24 @@ def startup_event():
 
 @app.get("/api/health")
 def health_check():
+    active_warehouses = 0
+    if os.path.exists(DB_PATH):
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(DISTINCT ubicacion) FROM inventory")
+            active_warehouses = cursor.fetchone()[0]
+            conn.close()
+        except Exception as e:
+            print(f"[ERROR] No se pudo contar las bodegas: {e}")
+            active_warehouses = 3  # Fallback
+            
     return {
         "status": "ok",
         "database": "connected" if os.path.exists(DB_PATH) else "missing",
-        "chromadb": "connected" if os.path.exists(CHROMA_PERSIST_DIR) else "missing"
+        "chromadb": "connected" if os.path.exists(CHROMA_PERSIST_DIR) else "missing",
+        "agent_llm": "online" if (agent and agent.agent_llm is not None) else "offline",
+        "active_warehouses": active_warehouses
     }
 
 @app.get("/api/inventory/critical")

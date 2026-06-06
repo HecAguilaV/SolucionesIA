@@ -67,16 +67,24 @@ class TripleFallbackLLMProvider(ILLMProvider):
         if "stock" in prompt.lower() or "inventario" in prompt.lower() or "bajo" in prompt.lower():
             low_stock_items = db.get_low_stock_products()
             if not low_stock_items:
-                return "[OFFLINE FALLBACK] Todos los productos tienen buen stock (>10)."
+                return "🟢 **Estado del Inventario:** Todos los productos tienen buen nivel de stock (superior a 10 unidades) en todas las bodegas."
             
-            res = "[OFFLINE FALLBACK] Productos con stock bajo crítico (<= 10):\n"
+            res = "🚨 **Alertas de Inventario Crítico (Stock ≤ 10 unidades):**\n\n"
             for item in low_stock_items:
                 prod = db.get_product(item.sku)
                 name = prod.name if prod else "Desconocido"
-                res += f"- {name} ({item.sku}): {item.stock_actual} unidades en {item.ubicacion}\n"
+                res += f"- **{name}** (`{item.sku}`): {item.stock_actual} unidades disponibles en la bodega de {item.ubicacion}.\n"
             return res
             
-        return "[OFFLINE FALLBACK] APIs no disponibles. Solo puedo responder consultas básicas de stock bajo en este momento."
+        return (
+            "⚠️ **Modo de Contingencia Local Activo**\n\n"
+            "Las APIs de Inteligencia Artificial (GitHub Models / Google Gemini) no están disponibles o tienen credenciales inválidas en este momento.\n\n"
+            "En este modo de emergencia local, solo puedo responder consultas sobre el inventario físico. "
+            "Por favor, intenta con preguntas como:\n"
+            "- *\"¿Qué productos tienen stock bajo?\"*\n"
+            "- *\"Mostrame el inventario crítico.\"*\n"
+            "- *\"Ver inventario de productos.\"*"
+        )
 
     def get_langchain_model(self):
         """Retorna el modelo LangChain principal con el fallback configurado nativamente si existe."""

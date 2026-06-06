@@ -16,14 +16,14 @@ function App() {
     try {
       setLoading(true);
       const [healthData, inventoryData] = await Promise.all([
-        fetchHealth().catch(() => ({ status: 'error', database: 'disconnected', chromadb: 'disconnected' })),
+        fetchHealth().catch(() => ({ status: 'error', database: 'disconnected', chromadb: 'disconnected', agent_llm: 'offline', active_warehouses: 0 })),
         fetchCriticalInventory().catch(() => [])
       ]);
       
       setHealth(healthData);
       setCriticalInventory(inventoryData);
       
-      if (healthData.status === 'error') {
+      if (healthData.status === 'error' || healthData.agent_llm === 'offline') {
         setIsOfflineMode(true);
       } else {
         setIsOfflineMode(false);
@@ -66,7 +66,8 @@ function App() {
 
         <KPICards 
           criticalCount={criticalInventory.length} 
-          isOffline={isOfflineMode} 
+          isOffline={isOfflineMode}
+          activeWarehouses={health ? health.active_warehouses : 0}
         />
 
         {activeTab === 'dashboard' ? (

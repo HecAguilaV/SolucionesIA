@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function KPICards({ criticalCount, isOffline }) {
+export default function KPICards({ criticalCount, isOffline, activeWarehouses }) {
   return (
     <div className="kpi-container">
       <div className="kpi-card critical">
@@ -14,7 +14,7 @@ export default function KPICards({ criticalCount, isOffline }) {
       <div className={`kpi-card ${isOffline ? 'warning' : 'success'}`}>
         <div className="kpi-info">
           <h3>Modo de Operación</h3>
-          <p>{isOffline ? 'Offline Fallback' : 'Online API'}</p>
+          <p>{isOffline ? 'Offline (Local)' : 'Online (LLM)'}</p>
         </div>
         <div className="kpi-icon">⚙️</div>
       </div>
@@ -22,7 +22,7 @@ export default function KPICards({ criticalCount, isOffline }) {
       <div className="kpi-card info">
         <div className="kpi-info">
           <h3>Bodegas Activas</h3>
-          <p>3</p>
+          <p>{activeWarehouses || 0}</p>
         </div>
         <div className="kpi-icon">📍</div>
       </div>
