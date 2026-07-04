@@ -26,12 +26,25 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Persistencia del tema seleccionado tras auto-refresh usando parámetros de consulta (query params)
+query_theme = st.query_params.get("theme", "Oscuro Slate")
+if query_theme not in ["Oscuro Slate", "Clarito Corporativo"]:
+    query_theme = "Oscuro Slate"
+
+default_index = 0 if query_theme == "Oscuro Slate" else 1
+
 # Selector de Tema
 st.sidebar.subheader("Personalización")
 selected_theme = st.sidebar.selectbox(
     "Tema Visual:",
-    ["Oscuro Slate", "Clarito Corporativo"]
+    ["Oscuro Slate", "Clarito Corporativo"],
+    index=default_index
 )
+
+# Si el usuario cambia el tema, actualizar parámetros de consulta y recargar
+if selected_theme != query_theme:
+    st.query_params["theme"] = selected_theme
+    st.rerun()
 
 # Configuración de Colores y Plantillas
 theme_config = {
@@ -137,9 +150,13 @@ st.markdown(f"""
         color: {cfg["text_color"]} !important;
         fill: {cfg["text_color"]} !important;
     }}
+
+    /* Opciones y botones flotantes del header principal de Streamlit (menú de tres puntos en esquina superior derecha) */
+    button[data-testid="stIconButton"], button[data-testid="stHeaderActionButton"], button[id="stActionButton"] {{
+        color: {cfg["text_color"]} !important;
+    }}
 </style>
 """, unsafe_allow_html=True)
-
 
 # Ruta del archivo de logs
 LOG_FILE_PATH = os.path.join(
@@ -222,11 +239,16 @@ else:
             template=cfg["plotly_template"],
             color_discrete_sequence=[cfg["accent_color"]]
         )
-        # Forzar fondo transparente en Plotly para que herede el fondo de la app y colores de fuente legibles
+        # Forzar fondo transparente y barra de herramientas (modebar) contrastada en Plotly
         fig_lat.update_layout(
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
-            font=dict(color=cfg["text_color"])
+            font=dict(color=cfg["text_color"]),
+            modebar=dict(
+                bgcolor="rgba(0,0,0,0)",
+                color=cfg["text_color"],
+                activecolor=cfg["accent_color"]
+            )
         )
         fig_lat.update_xaxes(tickfont=dict(color=cfg["text_color"]), title_font=dict(color=cfg["text_color"]), gridcolor="#475569" if selected_theme == "Oscuro Slate" else "#cbd5e1")
         fig_lat.update_yaxes(tickfont=dict(color=cfg["text_color"]), title_font=dict(color=cfg["text_color"]), gridcolor="#475569" if selected_theme == "Oscuro Slate" else "#cbd5e1")
@@ -251,7 +273,7 @@ else:
                 template=cfg["plotly_template"],
                 color_continuous_scale=cfg["color_scale"]
             )
-            # Forzar fondo transparente en Plotly para que herede el fondo de la app y colores de fuente legibles
+            # Forzar fondo transparente y barra de herramientas (modebar) contrastada en Plotly
             fig_tools.update_layout(
                 paper_bgcolor="rgba(0,0,0,0)",
                 plot_bgcolor="rgba(0,0,0,0)",
@@ -259,6 +281,11 @@ else:
                 coloraxis_colorbar=dict(
                     tickfont=dict(color=cfg["text_color"]),
                     title=dict(font=dict(color=cfg["text_color"]))
+                ),
+                modebar=dict(
+                    bgcolor="rgba(0,0,0,0)",
+                    color=cfg["text_color"],
+                    activecolor=cfg["accent_color"]
                 )
             )
             fig_tools.update_xaxes(tickfont=dict(color=cfg["text_color"]), title_font=dict(color=cfg["text_color"]), gridcolor="#475569" if selected_theme == "Oscuro Slate" else "#cbd5e1")
