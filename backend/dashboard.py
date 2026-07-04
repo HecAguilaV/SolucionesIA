@@ -26,7 +26,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Selector de Tema (Solo los dos temas solicitados)
+# Selector de Tema
 st.sidebar.subheader("Personalización")
 selected_theme = st.sidebar.selectbox(
     "Tema Visual:",
@@ -61,7 +61,7 @@ theme_config = {
 
 cfg = theme_config[selected_theme]
 
-# Inyección de CSS dinámico corregido sin romper los selectboxes y multiselects nativos
+# Inyección de CSS dinámico avanzado para redefinir variables de Streamlit y forzar contraste
 st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
@@ -69,28 +69,51 @@ st.markdown(f"""
     html, body, [class*="css"] {{
         font-family: 'Inter', sans-serif;
     }}
-    .stApp {{
-        background-color: {cfg["bg_color"]} !important;
+
+    /* Redefinir variables CSS globales de Streamlit */
+    :root, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stSidebar"] {{
+        --text-color: {cfg["text_color"]} !important;
+        --background-color: {cfg["bg_color"]} !important;
+        --secondary-background-color: {cfg["sidebar_bg_color"]} !important;
+        --primary-color: {cfg["accent_color"]} !important;
     }}
+    
+    /* Forzar fondo general y cabecera */
+    .stApp, [data-testid="stHeader"], header {{
+        background-color: {cfg["bg_color"]} !important;
+        color: {cfg["text_color"]} !important;
+    }}
+    
+    /* Forzar fondo de las tarjetas de métricas */
     .stMetric {{
         background-color: {cfg["card_bg_color"]} !important;
         padding: 20px;
         border-radius: 12px;
         border: 1px solid {cfg["card_border_color"]} !important;
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
     }}
-    /* Títulos e indicaciones generales */
-    h1, h2, h3, p, label {{
-        color: {cfg["text_color"]} !important;
-    }}
-    /* Fondo específico para el Sidebar */
+
+    /* Estilos específicos de la barra lateral (Sidebar) */
     [data-testid="stSidebar"] {{
         background-color: {cfg["sidebar_bg_color"]} !important;
     }}
-    /* Color de texto específico para títulos y textos en el Sidebar */
     [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, 
-    [data-testid="stSidebar"] p, [data-testid="stSidebar"] label {{
+    [data-testid="stSidebar"] p, [data-testid="stSidebar"] label, [data-testid="stSidebar"] span {{
         color: {cfg["sidebar_text_color"]} !important;
+    }}
+
+    /* Forzar estilos en listas desplegables (selectboxes y multiselects) y menús flotantes */
+    div[data-baseweb="select"] > div, div[role="listbox"], ul[role="listbox"], li[role="option"] {{
+        background-color: {cfg["card_bg_color"]} !important;
+        color: {cfg["text_color"]} !important;
+        border-color: {cfg["card_border_color"]} !important;
+    }}
+
+    /* Estilos de botones generales */
+    .stButton > button {{
+        background-color: {cfg["card_bg_color"]} !important;
+        color: {cfg["text_color"]} !important;
+        border: 1px solid {cfg["card_border_color"]} !important;
     }}
 </style>
 """, unsafe_allow_html=True)
@@ -176,6 +199,12 @@ else:
             template=cfg["plotly_template"],
             color_discrete_sequence=[cfg["accent_color"]]
         )
+        # Forzar fondo transparente en Plotly para que herede el fondo de la app
+        fig_lat.update_layout(
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            font_color=cfg["text_color"]
+        )
         st.plotly_chart(fig_lat, use_container_width=True)
 
     with col_g2:
@@ -196,6 +225,12 @@ else:
                 color="Invocaciones",
                 template=cfg["plotly_template"],
                 color_continuous_scale=cfg["color_scale"]
+            )
+            # Forzar fondo transparente en Plotly para que herede el fondo de la app
+            fig_tools.update_layout(
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+                font_color=cfg["text_color"]
             )
             st.plotly_chart(fig_tools, use_container_width=True)
         else:
