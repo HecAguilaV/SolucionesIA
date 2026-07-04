@@ -11,7 +11,10 @@
 ## 1. Introducción y Requisitos de la Evaluación
 En la presente Evaluación Parcial N°3, se extiende el sistema del Agente de Logística Inteligente (ALI) desarrollado para OmniRetail S.A. El propósito fundamental es la implementación y análisis de métricas de observabilidad, el registro estructurado de eventos para trazabilidad, la visualización mediante un dashboard interactivo de monitoreo y la formulación de propuestas de optimización de arquitectura basadas en datos empíricos de ejecución.
 
+![Interfaz de Usuario del Agente Conversacional y Monitoreo en Tiempo Real](img/captura_asistente_chat.png)
+
 ---
+
 
 ## 2. Implementación de Métricas de Observabilidad (IE1, IE2)
 Para evaluar el comportamiento del agente en escenarios con variabilidad de datos, se implementaron cuatro métricas clave:
@@ -55,7 +58,12 @@ Se desarrolló un Dashboard en Streamlit que lee en tiempo real el archivo de lo
 *   **Tabla de Trazabilidad:** Buscador interactivo de logs de trazabilidad detallados.
 *   **Auto-Refresh:** Integración de un script de recarga automática en el navegador ejecutado cada 60 segundos.
 
+![Panel Principal y Tarjetas de KPIs del Dashboard de Observabilidad](img/captura_dashboard_kpis.png)
+
+![Graficos Interactivos de Tiempos de Respuesta e Historial Completo de Logs](img/captura_dashboard_graficos.png)
+
 ---
+
 
 ## 5. Protocolos de Seguridad y Uso Responsable (IE6)
 En el diseño de producción, se consideraron los siguientes criterios éticos y normativos de seguridad:
