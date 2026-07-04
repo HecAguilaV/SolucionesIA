@@ -210,12 +210,14 @@ else:
             template=cfg["plotly_template"],
             color_discrete_sequence=[cfg["accent_color"]]
         )
-        # Forzar fondo transparente en Plotly para que herede el fondo de la app
+        # Forzar fondo transparente en Plotly para que herede el fondo de la app y colores de fuente legibles
         fig_lat.update_layout(
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
-            font_color=cfg["text_color"]
+            font=dict(color=cfg["text_color"])
         )
+        fig_lat.update_xaxes(tickfont=dict(color=cfg["text_color"]), title_font=dict(color=cfg["text_color"]), gridcolor="#475569" if selected_theme == "Oscuro Slate" else "#cbd5e1")
+        fig_lat.update_yaxes(tickfont=dict(color=cfg["text_color"]), title_font=dict(color=cfg["text_color"]), gridcolor="#475569" if selected_theme == "Oscuro Slate" else "#cbd5e1")
         st.plotly_chart(fig_lat, use_container_width=True)
 
     with col_g2:
@@ -237,12 +239,18 @@ else:
                 template=cfg["plotly_template"],
                 color_continuous_scale=cfg["color_scale"]
             )
-            # Forzar fondo transparente en Plotly para que herede el fondo de la app
+            # Forzar fondo transparente en Plotly para que herede el fondo de la app y colores de fuente legibles
             fig_tools.update_layout(
                 paper_bgcolor="rgba(0,0,0,0)",
                 plot_bgcolor="rgba(0,0,0,0)",
-                font_color=cfg["text_color"]
+                font=dict(color=cfg["text_color"]),
+                coloraxis_colorbar=dict(
+                    tickfont=dict(color=cfg["text_color"]),
+                    title=dict(font=dict(color=cfg["text_color"]))
+                )
             )
+            fig_tools.update_xaxes(tickfont=dict(color=cfg["text_color"]), title_font=dict(color=cfg["text_color"]), gridcolor="#475569" if selected_theme == "Oscuro Slate" else "#cbd5e1")
+            fig_tools.update_yaxes(tickfont=dict(color=cfg["text_color"]), title_font=dict(color=cfg["text_color"]), gridcolor="#475569" if selected_theme == "Oscuro Slate" else "#cbd5e1")
             st.plotly_chart(fig_tools, use_container_width=True)
         else:
             st.info("No se han invocado herramientas en el rango seleccionado (modo fallback o consultas generales).")
