@@ -17,6 +17,7 @@ echo -e "${BLUE}=== Iniciando Entorno de ALI (Agente de Logística Inteligente) 
 # Puertos fijos del proyecto (local + acceso por Tailscale/LAN)
 BACKEND_PORT=18050
 FRONTEND_PORT=19051
+DASHBOARD_PORT=18052
 APP_HOST="0.0.0.0"
 TAILSCALE_IP=$(tailscale ip -4 2>/dev/null | head -n 1 || true)
 
@@ -38,6 +39,7 @@ python -m ipykernel install --user --name=solucionesia_venv --display-name "Pyth
 # Variables para guardar PIDs de los procesos
 BACKEND_PID=""
 FRONTEND_PID=""
+DASHBOARD_PID=""
 
 # Función para limpiar y matar procesos en segundo plano al salir
 cleanup() {
@@ -49,6 +51,10 @@ cleanup() {
     if [ ! -z "$FRONTEND_PID" ]; then
         echo -e "Deteniendo Frontend React (PID: $FRONTEND_PID)..."
         kill $FRONTEND_PID 2>/dev/null
+    fi
+    if [ ! -z "$DASHBOARD_PID" ]; then
+        echo -e "Deteniendo Dashboard Streamlit (PID: $DASHBOARD_PID)..."
+        kill $DASHBOARD_PID 2>/dev/null
     fi
     echo -e "${GREEN}=== Servicios detenidos correctamente. ¡Hasta luego! ===${NC}"
     exit 0
@@ -65,7 +71,12 @@ BACKEND_PID=$!
 # Esperar un par de segundos a que levante el backend
 sleep 2
 
-# 5. Iniciar Frontend (Vite/React)
+# 5. Iniciar Dashboard de Observabilidad (Streamlit)
+echo -e "${GREEN}[INFO] Iniciando Dashboard Streamlit en puerto ${DASHBOARD_PORT}...${NC}"
+.venv/bin/streamlit run backend/dashboard.py --server.port ${DASHBOARD_PORT} --server.address ${APP_HOST} --server.headless true &
+DASHBOARD_PID=$!
+
+# 6. Iniciar Frontend (Vite/React)
 echo -e "${GREEN}[INFO] Iniciando servidor Frontend React en puerto ${FRONTEND_PORT}...${NC}"
 if [ -d "frontend" ]; then
     cd frontend
@@ -77,14 +88,17 @@ else
 fi
 
 echo -e "\n${BLUE}=== ¡Todos los servicios están arriba! ===${NC}"
-echo -e "👉 Backend API local: ${YELLOW}http://127.0.0.1:${BACKEND_PORT}${NC} (Docs en /docs)"
-echo -e "👉 Frontend local:    ${YELLOW}http://127.0.0.1:${FRONTEND_PORT}${NC}"
+echo -e "👉 Backend API local:    ${YELLOW}http://127.0.0.1:${BACKEND_PORT}${NC} (Docs en /docs)"
+echo -e "👉 Frontend local:       ${YELLOW}http://127.0.0.1:${FRONTEND_PORT}${NC}"
+echo -e "👉 Dashboard local:      ${YELLOW}http://127.0.0.1:${DASHBOARD_PORT}${NC}"
 if [ ! -z "$TAILSCALE_IP" ]; then
-    echo -e "👉 Backend Tailscale: ${YELLOW}http://${TAILSCALE_IP}:${BACKEND_PORT}${NC} (Docs en /docs)"
-    echo -e "👉 Frontend Tailscale:${YELLOW}http://${TAILSCALE_IP}:${FRONTEND_PORT}${NC}"
+    echo -e "👉 Backend Tailscale:    ${YELLOW}http://${TAILSCALE_IP}:${BACKEND_PORT}${NC} (Docs en /docs)"
+    echo -e "👉 Frontend Tailscale:   ${YELLOW}http://${TAILSCALE_IP}:${FRONTEND_PORT}${NC}"
+    echo -e "👉 Dashboard Tailscale:  ${YELLOW}http://${TAILSCALE_IP}:${DASHBOARD_PORT}${NC}"
 fi
-echo -e "👉 Jupyter Kernel:   ${YELLOW}Python (SolucionesIA Venv)${NC} (Ya registrado para tu notebook)"
+echo -e "👉 Jupyter Kernel:       ${YELLOW}Python (SolucionesIA Venv)${NC} (Ya registrado para tu notebook)"
 echo -e "\n${YELLOW}Presioná CTRL+C para detener todos los servidores a la vez.${NC}\n"
 
 # Mantener el script corriendo y volcar logs en tiempo real
 wait
+

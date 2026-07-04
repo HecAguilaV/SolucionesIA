@@ -185,9 +185,11 @@ export default function AgentChat({ setIsOfflineMode, messages, setMessages, inp
           placeholder="Pregúntale al agente sobre quiebres de stock o clima..."
           className="chat-input"
         />
-        <button type="submit" className="send-button" disabled={isLoading || !input.trim()}>
-          Enviar
+        <button type="submit" className="send-button" disabled={isLoading || !input.trim()} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '45px', height: '40px', padding: 0 }}>
+          <i className="ph ph-bold ph-paper-plane-right" style={{ fontSize: '1.2rem' }}></i>
         </button>
+
+
       </form>
     </div>
   );

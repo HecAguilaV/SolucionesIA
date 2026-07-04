@@ -7,7 +7,7 @@ export default function KPICards({ criticalCount, isOffline, activeWarehouses })
           <h3>Alertas de Stock</h3>
           <p>{criticalCount}</p>
         </div>
-        <div className="kpi-icon">🚨</div>
+        <div className="kpi-icon"><i className="ph ph-bold ph-warning-octagon"></i></div>
       </div>
 
       <div className={`kpi-card ${isOffline ? 'warning' : 'success'}`}>
@@ -15,7 +15,7 @@ export default function KPICards({ criticalCount, isOffline, activeWarehouses })
           <h3>Modo de Operación</h3>
           <p>{isOffline ? 'Offline (Local)' : 'Online (LLM)'}</p>
         </div>
-        <div className="kpi-icon">⚙️</div>
+        <div className="kpi-icon"><i className="ph ph-bold ph-cpu"></i></div>
       </div>
 
       <div className="kpi-card info">
@@ -23,8 +23,10 @@ export default function KPICards({ criticalCount, isOffline, activeWarehouses })
           <h3>Bodegas Activas</h3>
           <p>{activeWarehouses || 0}</p>
         </div>
-        <div className="kpi-icon">📍</div>
+        <div className="kpi-icon"><i className="ph ph-bold ph-house-line"></i></div>
       </div>
+
+
     </div>
   );
 }

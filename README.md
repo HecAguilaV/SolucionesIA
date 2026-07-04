@@ -1,6 +1,6 @@
 # Agente de Logística Inteligente — OmniRetail S.A.
 
-Este proyecto implementa un **Agente Inteligente Conversacional (ALI)** diseñado para la asignatura *Ingeniería de Soluciones con Inteligencia Artificial (ISY0101) - Evaluación Parcial 2*.
+Este proyecto implementa un **Agente Inteligente Conversacional (ALI)** y su respectiva **Suite de Observabilidad y Monitoreo**, desarrollado para la asignatura *Ingeniería de Soluciones con Inteligencia Artificial (ISY0101) - Evaluación Parcial 3*.
 
 ---
 
@@ -8,79 +8,101 @@ Este proyecto implementa un **Agente Inteligente Conversacional (ALI)** diseñad
 
 ### 1. Requisitos Previos
 - Python 3.9+
-- Una clave de API (configurada en [.env](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/.env)) como `GITHUB_TOKEN` o `GOOGLE_API_KEY`.
+- Node.js & pnpm (para el frontend de React)
+- Una clave de API configurada en `.env` como `GITHUB_TOKEN` o `GOOGLE_API_KEY`.
 
 ### 2. Instalación
-Clona el repositorio e instala las dependencias indicadas en [requirements.txt](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/requirements.txt):
+Clona el repositorio e instala las dependencias del backend:
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+E instala las dependencias del frontend:
+```bash
+cd frontend
+CI=true pnpm install
+cd ..
+```
+
 ### 3. Configuración
-Copia el archivo [.env.example](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/.env.example) a [.env](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/.env) y configura tus tokens:
+Copia el archivo `.env.example` a `.env` y configura tus tokens:
 ```bash
 cp .env.example .env
 ```
-*(Asegúrate de registrar tus API keys en [.env](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/.env) para habilitar el agente Online LLM).*
+*(Asegúrate de registrar tus API keys para habilitar el agente Online LLM en la nube).*
 
-### 4. Inicializar Datos
-Genera la base de datos SQLite ejecutando [scripts/setup_db.py](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/scripts/setup_db.py) y carga los documentos de política en la base de datos vectorial ChromaDB ejecutando [scripts/ingest_docs.py](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/scripts/ingest_docs.py):
+### 4. Inicializar Datos y Telemetría
+Genera la base de datos SQLite y carga los documentos de política en la base de datos vectorial ChromaDB:
 ```bash
 python scripts/setup_db.py
-PYTHONPATH=. python scripts/ingest_docs.py
+PYTHONPATH=backend python scripts/ingest_docs.py
+```
+
+**Poblar Telemetría de Prueba:**
+Para evaluar el dashboard con datos históricos simulados, ejecuta:
+```bash
+.venv/bin/python scripts/populate_telemetry.py
 ```
 
 ### 5. Ejecutar la Aplicación
 
-Tenés dos opciones para ejecutar el proyecto (la opción automática es la recomendada):
-
 #### Opción A: Ejecución Automática (Recomendada)
-Ejecutá el script de arranque [start.sh](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/start.sh) en la raíz. Este script levantará el Backend y el Frontend en paralelo, registrará el kernel de Jupyter del entorno virtual y detendrá todo de forma segura cuando presiones `CTRL+C`:
+Ejecuta el script de arranque `start.sh` en la raíz. Este script levantará el Backend API, el Frontend React y el Dashboard de Streamlit en paralelo:
 ```bash
 ./start.sh
 ```
 
+**Direcciones de acceso:**
+*   **Frontend Chat (React):** http://localhost:19051
+*   **Dashboard de Observabilidad (Streamlit):** http://localhost:18052
+*   **Backend API (Swagger Docs):** http://localhost:18050/docs
+
 #### Opción B: Ejecución Manual
-Si preferís iniciar los servicios por separado en distintas terminales:
+Si prefieres iniciar los servicios por separado:
 
-1. **Iniciar el Backend API:**
-   Inicia el servidor en [backend/main.py](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/backend/main.py):
-   ```bash
-   .venv/bin/python -m uvicorn main:app --app-dir backend --host 0.0.0.0 --port 18050 --reload
-   ```
+1.  **Iniciar Backend (FastAPI):**
+    ```bash
+    .venv/bin/python -m uvicorn main:app --app-dir backend --host 0.0.0.0 --port 18050 --reload
+    ```
+2.  **Iniciar Dashboard (Streamlit):**
+    ```bash
+    .venv/bin/streamlit run backend/dashboard.py --server.port 18052 --server.headless true
+    ```
+3.  **Iniciar Frontend (React):**
+    ```bash
+    cd frontend
+    pnpm run dev --host 0.0.0.0 --port 19051
+    ```
 
-2. **Iniciar el Frontend (React + Vite):**
-   Entra a la carpeta [frontend/](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/frontend) e inicia el servidor con `pnpm`:
-   ```bash
-   cd frontend
-   pnpm run dev --host 0.0.0.0 --port 19051
-   ```
+---
 
-*También podés explorar e interactuar de forma aislada con el notebook interactivo abriendo [notebooks/demo.ipynb](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/notebooks/demo.ipynb) ejecutando:*
+## Pruebas Automatizadas
+
+Para validar el funcionamiento del sistema de observabilidad y trazabilidad, ejecuta:
 ```bash
-jupyter notebook notebooks/demo.ipynb
+PYTHONPATH=backend .venv/bin/python -m pytest tests/test_observability.py
 ```
 
 ---
 
-## Arquitectura
+## Arquitectura de Observabilidad y Métricas (Evaluación 3)
 
-El sistema sigue los principios de **Clean Architecture** (Robert C. Martin), separando claramente el dominio, casos de uso, adaptadores e infraestructura. Para más detalles conceptuales, consulta [docs/arquitectura.md](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/docs/arquitectura.md) y el resumen técnico en [LearningIA.md](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/LearningIA.md).
+El sistema de observabilidad implementa y registra cuatro métricas clave para auditoría:
+1.  **Latencia de Respuesta:** Tiempo exacto de cómputo del agente.
+2.  **Frecuencia de Errores:** Registro de fallas capturadas y desvíos automáticos a contingencia.
+3.  **Uso de Recursos:** Herramientas de LangChain utilizadas y tokens consumidos.
+4.  **Precisión (LLM-as-a-Judge):** Autoevaluación de la respuesta basada en hechos e inventario real.
+
+Toda la telemetría se guarda en formato JSON Lines estructurado en `data/agent_observability.jsonl` y se consume en vivo desde el Dashboard de Streamlit.
 
 ---
 
-## Herramientas Autónomas Implementadas
-
-1.  **Consultar Inventario** ([inventory_query.py](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/backend/src/tools/inventory_query.py)): Recupera el stock físico y en tránsito de SQLite.
-2.  **Analizar Tendencias** ([trend_analyzer.py](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/backend/src/tools/trend_analyzer.py)): Calcula promedios de ventas históricas.
-3.  **Consultar Clima** ([weather_checker.py](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/backend/src/tools/weather_checker.py)): Recupera pronósticos que afectan ventas estacionales.
-4.  **Buscador de Políticas (RAG)** ([recommendation_engine.py](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/backend/src/tools/recommendation_engine.py)): Recupera reglas de negocio desde ChromaDB.
-5.  **Escribir Reporte** ([report_writer.py](file:///home/hector/Escritorio/SolucionesIA/SolucionesIA/backend/src/tools/report_writer.py)): Persiste recomendaciones justificadas en disco.
+## Seguridad y Uso Responsable
+*   **Modo Offline Fallback:** Si las APIs de LLM caen, el agente entra en modo seguro local, resolviendo consultas de stock directamente mediante consultas SQL puras sobre la base SQLite local, garantizando disponibilidad y privacidad de los datos.
 
 ---
 
 ## Autor
-
 - Héctor Águila

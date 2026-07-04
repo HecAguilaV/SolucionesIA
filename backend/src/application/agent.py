@@ -14,6 +14,8 @@ from src.tools.weather_checker import consultar_clima
 from src.tools.recommendation_engine import buscar_politicas_empresa
 from src.tools.report_writer import escribir_reporte
 from src.config.settings import AGENT_VERBOSE
+from src.infrastructure.observability import ObservabilityManager
+import time
 
 class InventoryAgent:
     def __init__(self):
@@ -44,7 +46,10 @@ class InventoryAgent:
         # 4. Memoria
         self.memory = self.memory_manager.get_window_memory(memory_key="chat_history")
         
-        # 5. Inicializar Agente
+        # 5. Observabilidad
+        self.observability = ObservabilityManager(self.llm_provider)
+        
+        # 6. Inicializar Agente
         self.executor = self._initialize_agent()
 
     def _initialize_agent(self):
@@ -74,14 +79,26 @@ class InventoryAgent:
             tools=self.tools, 
             memory=self.memory,
             verbose=AGENT_VERBOSE,
-            handle_parsing_errors=True
+            handle_parsing_errors=True,
+            return_intermediate_steps=True
         )
 
     def process_request(self, user_input: str) -> str:
+        start_time = time.time()
+        
         # 1. Fallback Offline (Si no hay LLM configurado)
         if not self.executor:
             print("[WARN] Ejecutando en modo Offline Fallback (No hay API keys).")
-            return self.llm_provider.generate_response(user_input)
+            response = self.llm_provider.generate_response(user_input)
+            latency = time.time() - start_time
+            self.observability.log_interaction(
+                query=user_input,
+                response=response,
+                latency_sec=latency,
+                status="success",
+                tools_used=[]
+            )
+            return response
             
         # 2. Planificación (Opcional, demuestra el concepto de IL2.3)
         strategy = None
@@ -104,13 +121,35 @@ class InventoryAgent:
             
         # 3. Ejecución (LangChain AgentExecutor)
         try:
-            response = self.executor.invoke({"input": user_input})
-            return response["output"]
+            res = self.executor.invoke({"input": user_input})
+            output_text = res["output"]
+            intermediate_steps = res.get("intermediate_steps", [])
+            tools_used = [step[0].tool for step in intermediate_steps]
+            
+            latency = time.time() - start_time
+            self.observability.log_interaction(
+                query=user_input,
+                response=output_text,
+                latency_sec=latency,
+                status="success",
+                tools_used=tools_used
+            )
+            return output_text
         except Exception as e:
             # Fallback en caso de error crítico del agente
             fallback_res = self.llm_provider.generate_response(user_input)
+            latency = time.time() - start_time
+            self.observability.log_interaction(
+                query=user_input,
+                response=fallback_res,
+                latency_sec=latency,
+                status="error",
+                error_message=str(e),
+                tools_used=[]
+            )
             return (
                 "⚠️ **Contingencia Local Activa**\n\n"
                 "El Agente ALI no pudo procesar la solicitud usando inteligencia artificial en la nube (se detectó un fallo en el proveedor de LLM).\n\n"
                 f"{fallback_res}"
             )
+

@@ -64,8 +64,8 @@ function App() {
             <h1>ALI - Agente de Logística Inteligente</h1>
             <p>Monitoreo inteligente de stock en tiempo real y asistente logístico con IA</p>
           </div>
-          <button onClick={loadData} className="send-button" style={{ padding: '0.65rem 1.25rem' }}>
-            🔄 Actualizar Datos
+          <button onClick={loadData} className="send-button" style={{ padding: '0.65rem 1.25rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <i className="ph ph-bold ph-arrows-counter-clockwise"></i> Actualizar Datos
           </button>
         </header>
 
@@ -117,12 +117,17 @@ function App() {
                             </span>
                           </td>
                           <td>{item.transit} uds</td>
-                          <td>📍 {item.location}</td>
+                          <td>
+                            <i className="ph ph-bold ph-map-pin" style={{ marginRight: '6px', color: '#38bdf8', verticalAlign: 'middle' }}></i>
+                            {item.location}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
+
+
               ) : (
                 <div className="loading-wrapper">
                   <span style={{ fontSize: '2.5rem' }}>✅</span>

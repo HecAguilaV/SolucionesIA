@@ -17,15 +17,17 @@ export default function Sidebar({ health, activeTab, setActiveTab }) {
             className={`menu-item ${activeTab === 'dashboard' ? 'active' : ''}`}
             onClick={() => setActiveTab('dashboard')}
           >
-            📊 Dashboard
+            <i className="ph ph-bold ph-chart-pie" style={{ marginRight: '8px', verticalAlign: 'middle' }}></i> Dashboard
           </li>
           <li 
             className={`menu-item ${activeTab === 'copiloto' ? 'active' : ''}`}
             onClick={() => setActiveTab('copiloto')}
           >
-            💬 Copiloto ALI
+            <i className="ph ph-bold ph-chats" style={{ marginRight: '8px', verticalAlign: 'middle' }}></i> Copiloto ALI
           </li>
         </ul>
+
+
       </div>
 
       <div className="status-panel">

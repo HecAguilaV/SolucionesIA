@@ -111,3 +111,22 @@ def chat_with_agent(request: ChatRequest):
         return ChatResponse(response=response)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Agent error: {str(e)}")
+
+from src.infrastructure.observability import OBSERVABILITY_LOG_PATH
+import json
+
+@app.get("/api/metrics")
+def get_observability_metrics():
+    if not os.path.exists(OBSERVABILITY_LOG_PATH):
+        return []
+    try:
+        metrics = []
+        with open(OBSERVABILITY_LOG_PATH, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.strip():
+                    metrics.append(json.loads(line))
+        return metrics[::-1]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error reading metrics: {str(e)}")
+
+
