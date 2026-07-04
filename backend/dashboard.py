@@ -37,6 +37,8 @@ selected_theme = st.sidebar.selectbox(
 theme_config = {
     "Oscuro Slate": {
         "bg_color": "#0f172a",
+        "sidebar_bg_color": "#1e293b",
+        "sidebar_text_color": "#f1f5f9",
         "card_bg_color": "#1e293b",
         "card_border_color": "#334155",
         "text_color": "#f1f5f9",
@@ -46,6 +48,8 @@ theme_config = {
     },
     "Clarito Corporativo": {
         "bg_color": "#f8fafc",
+        "sidebar_bg_color": "#e2e8f0",
+        "sidebar_text_color": "#0f172a",
         "card_bg_color": "#ffffff",
         "card_border_color": "#e2e8f0",
         "text_color": "#0f172a",
@@ -55,6 +59,8 @@ theme_config = {
     },
     "Gamer Cyberpunk": {
         "bg_color": "#0b0f19",
+        "sidebar_bg_color": "#121824",
+        "sidebar_text_color": "#00ffcc",
         "card_bg_color": "#161b2b",
         "card_border_color": "#ff007f",
         "text_color": "#00ffcc",
@@ -64,6 +70,8 @@ theme_config = {
     },
     "Bosque Sustentable": {
         "bg_color": "#f4f6f4",
+        "sidebar_bg_color": "#d1dbd4",
+        "sidebar_text_color": "#1e3a2f",
         "card_bg_color": "#e8ebe9",
         "card_border_color": "#cbd5e1",
         "text_color": "#1e3a2f",
@@ -93,11 +101,23 @@ st.markdown(f"""
         border: 1px solid {cfg["card_border_color"]} !important;
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     }}
+    /* Colores generales */
     h1, h2, h3, p, span, label, div {{
         color: {cfg["text_color"]} !important;
     }}
+    /* Fondo específico para el Sidebar */
+    [data-testid="stSidebar"] {{
+        background-color: {cfg["sidebar_bg_color"]} !important;
+    }}
+    /* Color de texto específico para el Sidebar */
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, 
+    [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] div, [data-testid="stSidebar"] .stMarkdown {{
+        color: {cfg["sidebar_text_color"]} !important;
+    }}
 </style>
 """, unsafe_allow_html=True)
+
 
 # Ruta del archivo de logs
 LOG_FILE_PATH = os.path.join(
