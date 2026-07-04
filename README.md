@@ -76,7 +76,14 @@ Si prefieres iniciar los servicios por separado:
     pnpm run dev --host 0.0.0.0 --port 19051
     ```
 
+#### Opción C: Notebook Interactivo de Demostración (Defensa)
+Para una inspección paso a paso de la ejecución del agente, llamadas a herramientas, generación de telemetría y gráficos Plotly en vivo (ideal para la defensa oral), puedes ejecutar:
+```bash
+.venv/bin/jupyter notebook notebooks/demo_observabilidad.ipynb
+```
+
 ---
+
 
 ## Pruebas Automatizadas
 
