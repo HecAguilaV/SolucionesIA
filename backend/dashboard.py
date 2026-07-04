@@ -26,24 +26,76 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Estilo personalizado (Vanilla CSS/Streamlit)
-st.markdown("""
+# Selector de Tema Manual en Sidebar
+st.sidebar.subheader("Personalización")
+selected_theme = st.sidebar.selectbox(
+    "Tema Visual:",
+    ["Oscuro Slate", "Clarito Corporativo", "Gamer Cyberpunk", "Bosque Sustentable"]
+)
+
+# Configuración de Colores y Plantillas por Tema
+theme_config = {
+    "Oscuro Slate": {
+        "bg_color": "#0f172a",
+        "card_bg_color": "#1e293b",
+        "card_border_color": "#334155",
+        "text_color": "#f1f5f9",
+        "accent_color": "#38bdf8",
+        "plotly_template": "plotly_dark",
+        "color_scale": "Viridis"
+    },
+    "Clarito Corporativo": {
+        "bg_color": "#f8fafc",
+        "card_bg_color": "#ffffff",
+        "card_border_color": "#e2e8f0",
+        "text_color": "#0f172a",
+        "accent_color": "#0284c7",
+        "plotly_template": "plotly_white",
+        "color_scale": "Blues"
+    },
+    "Gamer Cyberpunk": {
+        "bg_color": "#0b0f19",
+        "card_bg_color": "#161b2b",
+        "card_border_color": "#ff007f",
+        "text_color": "#00ffcc",
+        "accent_color": "#ff007f",
+        "plotly_template": "plotly_dark",
+        "color_scale": "Portland"
+    },
+    "Bosque Sustentable": {
+        "bg_color": "#f4f6f4",
+        "card_bg_color": "#e8ebe9",
+        "card_border_color": "#cbd5e1",
+        "text_color": "#1e3a2f",
+        "accent_color": "#15803d",
+        "plotly_template": "plotly_white",
+        "color_scale": "Greens"
+    }
+}
+
+cfg = theme_config[selected_theme]
+
+# Inyección de CSS dinámico para modificar los componentes de Streamlit según el tema
+st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
     
-    html, body, [class*="css"] {
+    html, body, [class*="css"] {{
         font-family: 'Inter', sans-serif;
-    }
-    .main {
-        background-color: #0f172a;
-    }
-    .stMetric {
-        background-color: #1e293b;
+    }}
+    .stApp {{
+        background-color: {cfg["bg_color"]} !important;
+    }}
+    .stMetric {{
+        background-color: {cfg["card_bg_color"]} !important;
         padding: 20px;
         border-radius: 12px;
-        border: 1px solid #334155;
+        border: 1px solid {cfg["card_border_color"]} !important;
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    }
+    }}
+    h1, h2, h3, p, span, label, div {{
+        color: {cfg["text_color"]} !important;
+    }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -74,7 +126,6 @@ def load_data():
     df["timestamp"] = pd.to_datetime(df["timestamp"])
     df = df.sort_values(by="timestamp", ascending=False)
     return df
-
 
 st.title(":material/monitoring: OmniRetail ALI — Panel de Control & Observabilidad")
 st.markdown("Monitoreo en tiempo real del Agente de Logística Inteligente.")
@@ -126,8 +177,8 @@ else:
             y="latency_sec",
             markers=True,
             labels={"timestamp": "Fecha y Hora", "latency_sec": "Latencia (s)"},
-            template="plotly_dark",
-            color_discrete_sequence=["#38bdf8"]
+            template=cfg["plotly_template"],
+            color_discrete_sequence=[cfg["accent_color"]]
         )
         st.plotly_chart(fig_lat, use_container_width=True)
 
@@ -147,8 +198,8 @@ else:
                 y="Herramienta",
                 orientation="h",
                 color="Invocaciones",
-                template="plotly_dark",
-                color_continuous_scale="Viridis"
+                template=cfg["plotly_template"],
+                color_continuous_scale=cfg["color_scale"]
             )
             st.plotly_chart(fig_tools, use_container_width=True)
         else:
