@@ -93,6 +93,16 @@ st.markdown(f"""
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
     }}
 
+    /* Forzar color de texto dentro de stMetric */
+    [data-testid="stMetricLabel"], [data-testid="stMetricValue"], .stMetric div {{
+        color: {cfg["text_color"]} !important;
+    }}
+
+    /* Forzar color de texto en el contenido principal */
+    .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6, .stApp p, .stApp span, .stApp label, .stApp .stMarkdown p {{
+        color: {cfg["text_color"]} !important;
+    }}
+
     /* Estilos específicos de la barra lateral (Sidebar) */
     [data-testid="stSidebar"] {{
         background-color: {cfg["sidebar_bg_color"]} !important;
@@ -113,6 +123,7 @@ st.markdown(f"""
     .stButton > button {{
         background-color: {cfg["card_bg_color"]} !important;
         color: {cfg["text_color"]} !important;
+
         border: 1px solid {cfg["card_border_color"]} !important;
     }}
 </style>
