@@ -26,14 +26,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Selector de Tema Manual en Sidebar
+# Selector de Tema (Solo los dos temas solicitados)
 st.sidebar.subheader("Personalización")
 selected_theme = st.sidebar.selectbox(
     "Tema Visual:",
-    ["Oscuro Slate", "Clarito Corporativo", "Gamer Cyberpunk", "Bosque Sustentable"]
+    ["Oscuro Slate", "Clarito Corporativo"]
 )
 
-# Configuración de Colores y Plantillas por Tema
+# Configuración de Colores y Plantillas
 theme_config = {
     "Oscuro Slate": {
         "bg_color": "#0f172a",
@@ -56,34 +56,12 @@ theme_config = {
         "accent_color": "#0284c7",
         "plotly_template": "plotly_white",
         "color_scale": "Blues"
-    },
-    "Gamer Cyberpunk": {
-        "bg_color": "#0b0f19",
-        "sidebar_bg_color": "#121824",
-        "sidebar_text_color": "#00ffcc",
-        "card_bg_color": "#161b2b",
-        "card_border_color": "#ff007f",
-        "text_color": "#00ffcc",
-        "accent_color": "#ff007f",
-        "plotly_template": "plotly_dark",
-        "color_scale": "Portland"
-    },
-    "Bosque Sustentable": {
-        "bg_color": "#f4f6f4",
-        "sidebar_bg_color": "#d1dbd4",
-        "sidebar_text_color": "#1e3a2f",
-        "card_bg_color": "#e8ebe9",
-        "card_border_color": "#cbd5e1",
-        "text_color": "#1e3a2f",
-        "accent_color": "#15803d",
-        "plotly_template": "plotly_white",
-        "color_scale": "Greens"
     }
 }
 
 cfg = theme_config[selected_theme]
 
-# Inyección de CSS dinámico para modificar los componentes de Streamlit según el tema
+# Inyección de CSS dinámico corregido sin romper los selectboxes y multiselects nativos
 st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
@@ -101,23 +79,21 @@ st.markdown(f"""
         border: 1px solid {cfg["card_border_color"]} !important;
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     }}
-    /* Colores generales */
-    h1, h2, h3, p, span, label, div {{
+    /* Títulos e indicaciones generales */
+    h1, h2, h3, p, label {{
         color: {cfg["text_color"]} !important;
     }}
     /* Fondo específico para el Sidebar */
     [data-testid="stSidebar"] {{
         background-color: {cfg["sidebar_bg_color"]} !important;
     }}
-    /* Color de texto específico para el Sidebar */
+    /* Color de texto específico para títulos y textos en el Sidebar */
     [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, 
-    [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] div, [data-testid="stSidebar"] .stMarkdown {{
+    [data-testid="stSidebar"] p, [data-testid="stSidebar"] label {{
         color: {cfg["sidebar_text_color"]} !important;
     }}
 </style>
 """, unsafe_allow_html=True)
-
 
 # Ruta del archivo de logs
 LOG_FILE_PATH = os.path.join(
