@@ -2,9 +2,11 @@ from langchain_core.tools import tool
 from src.infrastructure.database import SQLiteDatabaseAdapter
 from src.config.settings import DB_PATH
 import sqlite3
+from typing import Optional
 
 @tool
-def consultar_inventario(sku: str = None) -> str:
+def consultar_inventario(sku: Optional[str] = None) -> str:
+
     """
     Consulta el inventario de productos. 
     Si se provee un código SKU, muestra el detalle físico de ese producto específico.
