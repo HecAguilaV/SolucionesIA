@@ -123,11 +123,23 @@ st.markdown(f"""
     .stButton > button {{
         background-color: {cfg["card_bg_color"]} !important;
         color: {cfg["text_color"]} !important;
-
         border: 1px solid {cfg["card_border_color"]} !important;
+    }}
+
+    /* Forzar contraste en la barra de herramientas flotante de las tablas (buscar, pantalla completa, descargar) */
+    [data-testid="stElementToolbar"], .stElementToolbar {{
+        background-color: {cfg["card_bg_color"]} !important;
+        border: 1px solid {cfg["card_border_color"]} !important;
+        border-radius: 8px !important;
+    }}
+    [data-testid="stElementToolbar"] button, [data-testid="stElementToolbar"] svg, [data-testid="stElementToolbar"] span,
+    .stElementToolbar button, .stElementToolbar svg, .stElementToolbar span {{
+        color: {cfg["text_color"]} !important;
+        fill: {cfg["text_color"]} !important;
     }}
 </style>
 """, unsafe_allow_html=True)
+
 
 # Ruta del archivo de logs
 LOG_FILE_PATH = os.path.join(
