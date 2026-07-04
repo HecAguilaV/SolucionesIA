@@ -26,7 +26,8 @@ class MemoryManager:
         return ConversationBufferWindowMemory(
             k=MEMORY_WINDOW_SIZE,
             memory_key=memory_key,
-            return_messages=True
+            return_messages=True,
+            output_key="output"
         )
         
     def get_summary_memory(self, memory_key="chat_history") -> BaseMemory:
@@ -40,5 +41,6 @@ class MemoryManager:
         return ConversationSummaryMemory(
             llm=self.llm,
             memory_key=memory_key,
-            return_messages=True
+            return_messages=True,
+            output_key="output"
         )
