@@ -2,7 +2,7 @@
 
 Este proyecto implementa un **Agente Inteligente Conversacional** diseñado para la asignatura *Ingeniería de Soluciones con Inteligencia Artificial (ISY0101) - Evaluación Parcial 2*.
 
-## 🚀 Inicio Rápido
+## Inicio Rápido
 
 ### 1. Requisitos Previos
 - Python 3.9+
@@ -38,16 +38,15 @@ streamlit run app.py
 ```
 *También puedes explorar el notebook interactivo ejecutando `jupyter notebook demo.ipynb`.*
 
-## 🏗️ Arquitectura
+## Arquitectura
 El sistema sigue los principios de **Clean Architecture** (Robert C. Martin), separando claramente el dominio, casos de uso, adaptadores e infraestructura. Para más detalles, consulta `docs/arquitectura.md`.
 
-## 🛠️ Herramientas Autónomas Implementadas
+## Herramientas Autónomas Implementadas
 1. **Consultar Inventario**: Recupera el stock físico y en tránsito (SQL).
 2. **Analizar Tendencias**: Calcula promedios de ventas históricas.
 3. **Consultar Clima**: Recupera pronósticos que afectan ventas estacionales.
 4. **Buscador de Políticas (RAG)**: Recupera reglas de negocio desde ChromaDB.
 5. **Escribir Reporte**: Persiste recomendaciones justificadas en disco.
 
-## 🤝 Integrantes
+## Integrantes
 - Héctor Águila
-- (Antigravity IA Assistant)
