@@ -1,6 +1,17 @@
 # Agente de Logística Inteligente — OmniRetail S.A.
 
-Este proyecto implementa un **Agente Inteligente Conversacional (ALI)** y su respectiva **Suite de Observabilidad y Monitoreo**, desarrollado para la asignatura *Ingeniería de Soluciones con Inteligencia Artificial (ISY0101) - Evaluación Parcial 3*.
+Este proyecto implementa un **Agente Inteligente Conversacional (ALI)** y su respectiva **Suite de Observabilidad y Monitoreo**, desarrollado para la asignatura *Ingeniería de Soluciones con Inteligencia Artificial (ISY0101)* como consolidación para el **Examen Final Transversal (EFT)**.
+
+---
+
+## Estructura del Portafolio de Evaluaciones (Ramas de Git)
+
+Para facilitar la evaluación del proyecto a lo largo del semestre, el repositorio está estructurado en las siguientes ramas que aíslan el código e informes correspondientes a cada hito:
+
+*   🌐 **[Rama main (Examen Final Transversal - Consolidado)](https://github.com/HecAguilaV/SolucionesIA/tree/main)**: Versión final integrada de la solución (FastAPI Backend, React Frontend, Streamlit Dashboard y Telemetría de Observabilidad).
+*   📁 **[Rama Evaluacion1 (Hito 1 - Diseño y RAG)](https://github.com/HecAguilaV/SolucionesIA/tree/Evaluacion1)**: Diseño conceptual, prompts optimizados y pipeline básico de recuperación semántica RAG (ChromaDB + SQLite).
+*   📁 **[Rama Evaluacion2 (Hito 2 - Agente y Streamlit)](https://github.com/HecAguilaV/SolucionesIA/tree/Evaluacion2)**: Agente lógico con herramientas de cálculo y reporte, implementado sobre una interfaz monolítica en Streamlit.
+*   📁 **[Rama Evaluacion3 (Hito 3 - FastAPI + React + Observabilidad)](https://github.com/HecAguilaV/SolucionesIA/tree/Evaluacion3)**: Migración a arquitectura empresarial de microservicios, UI en React/Vite y panel de observabilidad en Streamlit.
 
 ---
 
