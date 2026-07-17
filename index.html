@@ -104,6 +104,37 @@
             color: var(--accent);
         }
 
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .btn-download-pdf {
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #dc2626; /* Sobrio color rojo PDF */
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-download-pdf:hover {
+            background-color: #b91c1c;
+        }
+
+        .btn-download-pdf i {
+            font-size: 1rem;
+        }
+
+
         /* Full Width Fluid Section Layout */
         section {
             width: 100%;
@@ -544,7 +575,12 @@
     <!-- Header -->
     <header>
         <div class="masthead-logo">ISY0101 - Ingeniería de Soluciones con IA</div>
-        <div class="masthead-section">Examen Final Transversal - Julio 2026</div>
+        <div class="header-right">
+            <span class="masthead-section">Examen Final Transversal - Julio 2026</span>
+            <a href="docs/Informe_Final_EFT.pdf" class="btn-download-pdf" target="_blank" download="Informe_Final_EFT_Hector_Aguila.pdf">
+                <i class="ph ph-file-pdf"></i> PDF
+            </a>
+        </div>
     </header>
 
 
