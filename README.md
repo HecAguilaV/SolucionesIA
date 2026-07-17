@@ -39,7 +39,7 @@ streamlit run app.py
 *También puedes explorar el notebook interactivo ejecutando `jupyter notebook demo.ipynb`.*
 
 ## Arquitectura
-El sistema sigue los principios de **Clean Architecture** (Robert C. Martin), separando claramente el dominio, casos de uso, adaptadores e infraestructura. Para más detalles, consulta `docs/arquitectura.md`.
+El sistema sigue los principios de **Clean Architecture** (Robert C. Martin), separando claramente el dominio, casos de uso, adaptadores e infraestructura. Para más detalles, consulta [docs/Arquitectura.md](docs/Arquitectura.md).
 
 ## Herramientas Autónomas Implementadas
 1. **Consultar Inventario**: Recupera el stock físico y en tránsito (SQL).
@@ -47,6 +47,10 @@ El sistema sigue los principios de **Clean Architecture** (Robert C. Martin), se
 3. **Consultar Clima**: Recupera pronósticos que afectan ventas estacionales.
 4. **Buscador de Políticas (RAG)**: Recupera reglas de negocio desde ChromaDB.
 5. **Escribir Reporte**: Persiste recomendaciones justificadas en disco.
+
+## Documentación
+El informe técnico completo con la justificación del diseño, formulación de prompts y arquitectura de esta fase se encuentra disponible en:
+*   [Informe Técnico EP2 (Markdown)](docs/Informe_EP2_ISY0101.md)
 
 ## Integrantes
 - Héctor Águila
