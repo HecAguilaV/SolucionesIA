@@ -140,6 +140,11 @@ Toda la telemetría se guarda en formato JSON Lines estructurado en `data/agent_
 
 ---
 
+## Documentación
+
+El informe técnico consolidado con la justificación del diseño, formulación de prompts, métricas de observabilidad, resiliencia offline y declaración de uso de IA de este proyecto se encuentra disponible en:
+*   [Informe Técnico Final EFT (Markdown)](docs/Informe_Final_EFT.md)
+
 ## Autor
 
 - Héctor Águila
