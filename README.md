@@ -111,5 +111,9 @@ Toda la telemetría se guarda en formato JSON Lines estructurado en `data/agent_
 
 ---
 
+## Documentación
+El informe técnico completo con la justificación del diseño, formulación de prompts, métricas de observabilidad y suite de telemetría de esta fase se encuentra disponible en:
+*   [Informe Técnico EP3 (Markdown)](docs/Informe_Tecnico_Ev3.md)
+
 ## Autor
 - Héctor Águila
