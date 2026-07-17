@@ -111,28 +111,27 @@
         }
 
         .btn-download-pdf {
-            font-family: var(--font-sans);
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #ffffff;
-            background-color: #dc2626; /* Sobrio color rojo PDF */
-            border: none;
-            padding: 5px 12px;
-            border-radius: 4px;
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 0.85rem;
+            color: var(--accent);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: background-color 0.2s ease;
+            border-bottom: 1px solid transparent;
+            transition: var(--transition-smooth);
         }
 
         .btn-download-pdf:hover {
-            background-color: #b91c1c;
+            color: var(--primary);
+            border-bottom: 1px solid var(--primary);
         }
 
         .btn-download-pdf i {
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
+
 
 
         /* Full Width Fluid Section Layout */
@@ -577,8 +576,8 @@
         <div class="masthead-logo">ISY0101 - Ingeniería de Soluciones con IA</div>
         <div class="header-right">
             <span class="masthead-section">Examen Final Transversal - Julio 2026</span>
-            <a href="docs/Informe_Final_EFT.pdf" class="btn-download-pdf" target="_blank" download="Informe_Final_EFT_Hector_Aguila.pdf">
-                <i class="ph ph-file-pdf"></i> PDF
+            <a href="../../docs/Informe_Final_EFT_Publico.pdf" class="btn-download-pdf" target="_blank" download="Informe_Final_EFT_OmniRetail.pdf">
+                <i class="ph ph-file-pdf"></i> Descargar Informe Semestral
             </a>
         </div>
     </header>
