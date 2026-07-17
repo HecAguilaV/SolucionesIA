@@ -6,6 +6,7 @@
 **Evaluación:** Examen Final Transversal (EFT)
 **Estudiante:** Héctor Águila
 **Fecha:** Julio 2026
+**Presentación:** [hecaguilav.github.io/SolucionesIA](https://hecaguilav.github.io/SolucionesIA/)
 
 ---
 

@@ -2,6 +2,8 @@
 
 Este proyecto implementa un **Agente Inteligente Conversacional (ALI)** y su respectiva **Suite de Observabilidad y Monitoreo**, desarrollado para la asignatura *Ingeniería de Soluciones con Inteligencia Artificial (ISY0101)* como consolidación para el **Examen Final Transversal (EFT)**.
 
+**🔗 Presentación Web Interactiva (GitHub Pages):** [hecaguilav.github.io/SolucionesIA](https://hecaguilav.github.io/SolucionesIA/)
+
 ---
 
 ## Estructura del Portafolio de Evaluaciones (Ramas de Git)
