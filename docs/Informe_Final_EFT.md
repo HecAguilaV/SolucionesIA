@@ -148,12 +148,30 @@ A continuacion se detalla la funcion de cada archivo y componente del proyecto s
 
 ---
 
-## 6. Conclusiones y Referencias (APA)
+## 6. Conclusiones, Reflexiones y Declaracion de Uso de IA
 
-### Conclusiones
+### 6.1 Conclusiones del Proyecto Semestral
 La evolucion de la solucion a lo largo del semestre permitio contrastar los paradigmas de desarrollo tradicionales con el diseno basado en agentes inteligentes. La integracion de Clean Architecture con tecnicas de RAG local sobre ChromaDB demuestra ser la respuesta mas estable para mitigar las alucinaciones en un entorno de negocios. La suite de observabilidad implementada no solo provee control operacional, sino que aporta la telemetria necesaria para fundamentar el rediseño y la optimizacion continua de la infraestructura.
 
-### Referencias
+### 6.2 Reflexion Personal del Estudiante (Requisito Individual Obligatorio)
+*Instrucciones de Duoc UC: Este apartado debe ser redactado a mano por el alumno sin asistencia de IA, detallando su aprendizaje individual y su contribucion al proyecto.*
+
+**Escribe tu reflexion personal aqui:**
+[REEMPLAZAR ESTE TEXTO CON TU REFLEXION PERSONAL E INDIVIDUAL REDACTADA A MANO]
+
+---
+
+## 7. Declaracion de Uso de Asistentes de Inteligencia Artificial
+
+De acuerdo con las politicas del uso etico de Inteligencia Artificial de Duoc UC, se declara lo siguiente respecto al desarrollo de este entregable:
+*   **Herramienta Utilizada**: Antigravity AI Coding Assistant (basado en Gemini 3.5 Flash).
+*   **Metodo de Aplicacion**: Se utilizo la herramienta exclusivamente como asistente de apoyo de ingenieria para la correccion gramatical de la documentacion, la diagramacion estructurada del flujo del sistema en Mermaid, la organizacion del formato Markdown, y la insercion de enlaces de navegabilidad en el notebook de observabilidad.
+*   **Originalidad**: Todas las ideas, analisis comparativos, disenos de bases de datos relacionales y vectoriales, y la implementacion de las herramientas y planificadores en Python son de autoría propia del equipo del proyecto.
+
+---
+
+## 8. Referencias (APA)
+
 *   Martin, R. C. (2012). *Clean Architecture: A Craftsman's Guide to Software Structure and Design*. Prentice Hall.
 *   LangChain Community. (2024). *Retrieval-Augmented Generation (RAG) Conceptual Documentation*. Recuperado de https://js.langchain.com/docs/concepts/rag
 *   Reimers, N., & Gurevych, I. (2019). Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. *arXiv preprint arXiv:1908.10084*.
