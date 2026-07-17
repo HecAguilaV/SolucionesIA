@@ -1,11 +1,10 @@
 # Informe Técnico Final: Consolidación de Solución de Agente de IA y RAG (EFT)
-
 ## Agente de Gestión de Inventario — OmniRetail S.A.
 
-**Asignatura:** Ingeniería de Soluciones con Inteligencia Artificial (ISY0101)
-**Evaluación:** Examen Final Transversal (EFT)
-**Estudiante:** Héctor Águila
-**Fecha:** Julio 2026
+**Asignatura:** Ingeniería de Soluciones con Inteligencia Artificial (ISY0101)  
+**Evaluación:** Examen Final Transversal (EFT)  
+**Estudiante:** Héctor Águila  
+**Fecha:** Julio 2026  
 **Presentación:** [hecaguilav.github.io/SolucionesIA](https://hecaguilav.github.io/SolucionesIA/)
 
 ---
@@ -13,7 +12,6 @@
 ## 1. Análisis del Caso Organizacional
 
 ### 1.1 Contexto de la Organización y Desafíos
-
 <p style="text-align: justify;">OmniRetail S.A., gran cadena de comercio minorista chilena, enfrentaba pérdidas operativas significativas debido a dos problemas en la gestión de su inventario: quiebres de stock (especialmente críticos en productos con alta demanda estacional) y sobreinventario (que inmoviliza capital y eleva los costos de almacenamiento).</p>
 
 <p style="text-align: justify;">Las decisiones se tomaban analizando manualmente planillas desconectadas (ventas históricas, inventario físico) y políticas en lenguaje natural (coberturas ideales, reglas de reposición). El desafío era diseñar una solución que automatice y asista a los jefes de tienda en sus decisiones de reabastecimiento en menos de 5 minutos, considerando factores externos como el clima, erradicando alucinaciones del modelo y garantizando consistencia ante caídas de red.</p>
@@ -23,7 +21,6 @@
 ## 2. Diseño de la Solución Basada en LLM y RAG
 
 ### 2.1 Formulación y Optimización de Prompts
-
 <p style="text-align: justify;">Para garantizar la precisión de las respuestas del agente, se definió un prompt de sistema estructurado para el agente en [backend/src/application/agent.py](../backend/src/application/agent.py) que delimita sus fronteras de acción:</p>
 
 <ul>
@@ -33,7 +30,6 @@
 </ul>
 
 ### 2.2 Implementación de Pipelines RAG
-
 <p style="text-align: justify;">El pipeline RAG para datos no estructurados de políticas corporativas está implementado en:</p>
 
 <ul>
@@ -42,7 +38,6 @@
 </ul>
 
 ### 2.3 Diseño de la Arquitectura Completa
-
 <p style="text-align: justify;">El sistema se diseña bajo los lineamientos de Clean Architecture, dividiendo las responsabilidades en capas desacopladas (Domain, Use Cases, Adapters, Infrastructure), detallado en la documentación de arquitectura [docs/Arquitectura.md](Arquitectura.md).</p>
 
 ```mermaid
@@ -85,7 +80,6 @@ graph TD
 ## 3. Desarrollo de Agente Funcional
 
 ### 3.1 Integración de Herramientas (Tools)
-
 <p style="text-align: justify;">El agente expone cinco herramientas decoradas con `@tool` ubicadas en el directorio [backend/src/tools/](../backend/src/tools/):</p>
 
 <ul>
@@ -97,11 +91,9 @@ graph TD
 </ul>
 
 ### 3.2 Configuración de Memoria
-
 <p style="text-align: justify;">Se utiliza una memoria con ventana deslizante `ConversationBufferWindowMemory` (`k=10`) implementada en [backend/src/memory/conversation_memory.py](../backend/src/memory/conversation_memory.py), equilibrando la retención de contexto conversacional reciente con la eficiencia del prompt de entrada del modelo.</p>
 
 ### 3.3 Planificación y Toma de Decisiones
-
 <p style="text-align: justify;">El módulo [backend/src/application/planner.py](../backend/src/application/planner.py) define tres estrategias de planificación dinámica que evitan la improvisación del agente ante consultas complejas:</p>
 
 <ul>
@@ -115,7 +107,6 @@ graph TD
 ## 4. Implementación de Observabilidad, Trazabilidad y Seguridad
 
 ### 4.1 Métricas de Observabilidad y Justificación de Negocio
-
 <p style="text-align: justify;">Para que el agente de logística sea viable en un entorno real de producción, se diseñó un manager de telemetría en [backend/src/infrastructure/observability.py](../backend/src/infrastructure/observability.py) que captura cuatro métricas clave por cada turno de conversación, guardando las trazas estructuradas en el archivo [data/agent_observability.jsonl](../data/agent_observability.jsonl):</p>
 
 <ol>
@@ -134,7 +125,6 @@ graph TD
 </ol>
 
 ### 4.2 Trazabilidad de Logs y Análisis de Datos
-
 <p style="text-align: justify;">Los logs son leídos y consolidados en tiempo real por el dashboard implementado en [backend/dashboard.py](../backend/dashboard.py).</p>
 
 <ul>
@@ -143,7 +133,6 @@ graph TD
 </ul>
 
 ### 4.3 Propuestas de Experimentos Futuros
-
 <p style="text-align: justify;">Para consolidar la mejora del sistema, se proponen tres experimentos técnicos estructurados:</p>
 
 <ul>
@@ -153,7 +142,6 @@ graph TD
 </ul>
 
 ### 4.4 Protocolos de Seguridad y Resiliencia Offline
-
 <ul>
     <li style="text-align: justify; margin-bottom: 8px;"><strong>Modo Offline Fallback</strong>: Si las conexiones a internet fallan o las cuotas de API del LLM se agotan, la clase <code>TripleFallbackLLMProvider</code> en [backend/src/infrastructure/llm_provider.py](../backend/src/infrastructure/llm_provider.py) captura el error y activa de forma automática un motor heurístico local. Este motor procesa la consulta directamente contra la base SQLite y genera una lista de alertas logísticas en formato estructurado, manteniendo la continuidad operativa en la bodega sin conexión a red externa.</li>
     <li style="text-align: justify; margin-bottom: 8px;"><strong>Privacidad</strong>: No se registran datos personales ni credenciales del personal en los archivos locales de logs, garantizando la soberanía de la información corporativa.</li>
@@ -166,41 +154,38 @@ graph TD
 <p style="text-align: justify;">A continuación se detalla la función de cada archivo y componente del proyecto semestral:</p>
 
 ### 5.1 Capa de backend y Código Fuente (`backend/`)
-
-* [backend/main.py](../backend/main.py): Orquestador e inicializador de la API FastAPI. Define las rutas HTTP `/api/agent/chat` que interactúan con la aplicación web.
-* [backend/dashboard.py](../backend/dashboard.py): Panel de control interactivo desarrollado en Streamlit que lee las trazas del archivo de observabilidad y genera gráficos analíticos usando Plotly.
-* [backend/src/application/agent.py](../backend/src/application/agent.py): Contiene la clase `InventoryAgent` encargada de armar el prompt, configurar las herramientas de LangChain y ejecutar la cadena ReAct.
-* [backend/src/application/planner.py](../backend/src/application/planner.py): Define las tres clases planificadoras (`GoalOrientedPlanner`, `HierarchicalPlanner` y `ReactivePlanner`) para la descomposición lógica de metas.
-* [backend/src/infrastructure/database.py](../backend/src/infrastructure/database.py): Implementa `SQLiteDatabaseAdapter` para encapsular las consultas de stock, ventas e inventario crítico.
-* [backend/src/infrastructure/llm_provider.py](../backend/src/infrastructure/llm_provider.py): Implementa `TripleFallbackLLMProvider` para asegurar la resiliencia offline.
-* [backend/src/infrastructure/vector_store.py](../backend/src/infrastructure/vector_store.py): Encargado del cliente local de ChromaDB, indexación de manuales y codificación de embeddings.
-* [backend/src/memory/semantic_retriever.py](../backend/src/memory/semantic_retriever.py): Lógica de búsqueda por similitud de coseno del RAG.
-* [backend/src/memory/conversation_memory.py](../backend/src/memory/conversation_memory.py): Adaptador de la memoria conversacional de LangChain.
+*   [backend/main.py](../backend/main.py): Orquestador e inicializador de la API FastAPI. Define las rutas HTTP `/api/agent/chat` que interactúan con la aplicación web.
+*   [backend/dashboard.py](../backend/dashboard.py): Panel de control interactivo desarrollado en Streamlit que lee las trazas del archivo de observabilidad y genera gráficos analíticos usando Plotly.
+*   [backend/src/application/agent.py](../backend/src/application/agent.py): Contiene la clase `InventoryAgent` encargada de armar el prompt, configurar las herramientas de LangChain y ejecutar la cadena ReAct.
+*   [backend/src/application/planner.py](../backend/src/application/planner.py): Define las tres clases planificadoras (`GoalOrientedPlanner`, `HierarchicalPlanner` y `ReactivePlanner`) para la descomposición lógica de metas.
+*   [backend/src/infrastructure/database.py](../backend/src/infrastructure/database.py): Implementa `SQLiteDatabaseAdapter` para encapsular las consultas de stock, ventas e inventario crítico.
+*   [backend/src/infrastructure/llm_provider.py](../backend/src/infrastructure/llm_provider.py): Implementa `TripleFallbackLLMProvider` para asegurar la resiliencia offline.
+*   [backend/src/infrastructure/vector_store.py](../backend/src/infrastructure/vector_store.py): Encargado del cliente local de ChromaDB, indexación de manuales y codificación de embeddings.
+*   [backend/src/memory/semantic_retriever.py](../backend/src/memory/semantic_retriever.py): Lógica de búsqueda por similitud de coseno del RAG.
+*   [backend/src/memory/conversation_memory.py](../backend/src/memory/conversation_memory.py): Adaptador de la memoria conversacional de LangChain.
 
 ### 5.2 Capa de Pruebas Unitarias (`tests/`)
-
-* [tests/test_observability.py](../tests/test_observability.py): Pruebas automatizadas del manager de observabilidad. Asegura que los logs se guarden en JSON Lines, registren latencia y que la llamada al Juez no falle.
-* [tests/test_planners.py](../tests/test_planners.py): Pruebas de integración que validan que los planificadores de lógica de negocio descompongan correctamente las consultas en secuencias esperadas de herramientas.
+*   [tests/test_observability.py](../tests/test_observability.py): Pruebas automatizadas del manager de observabilidad. Asegura que los logs se guarden en JSON Lines, registren latencia y que la llamada al Juez no falle.
+*   [tests/test_planners.py](../tests/test_planners.py): Pruebas de integración que validan que los planificadores de lógica de negocio descompongan correctamente las consultas en secuencias esperadas de herramientas.
 
 ### 5.3 Carpeta de Documentación Técnica (`docs/`)
-
-* [docs/Arquitectura.md](Arquitectura.md): Justifica la separación en capas de la solución y detalla el flujo de datos.
-* [docs/Bateria_Pruebas.md](Bateria_Pruebas.md): Listado de escenarios y consultas preparadas para validación de RAG, memoria y offline fallback.
-* [docs/Decisiones_Diseño.md](Decisiones_Diseño.md): Documento explicativo sobre la elección de patrones y frameworks lógicos (Clean Architecture, LangChain).
+*   [docs/Arquitectura.md](Arquitectura.md): Justifica la separación en capas de la solución y detalla el flujo de datos.
+*   [docs/Bateria_Pruebas.md](Bateria_Pruebas.md): Listado de escenarios y consultas preparadas para validación de RAG, memoria y offline fallback.
+*   [docs/Decisiones_Diseno.md](Decisiones_Diseno.md): Documento explicativo sobre la elección de patrones y frameworks lógicos (Clean Architecture, LangChain).
 
 ---
 
 ## 6. Conclusiones, Reflexiones y Declaración de Uso de IA
 
 ### 6.1 Conclusiones del Proyecto Semestral
-
 <p style="text-align: justify;">La evolución de la solución a lo largo del semestre permitió contrastar los paradigmas de desarrollo tradicionales con el diseño basado en agentes inteligentes. La integración de Clean Architecture con técnicas de RAG local sobre ChromaDB demuestra ser la respuesta más estable para mitigar las alucinaciones en un entorno de negocios. La suite de observabilidad implementada no solo provee control operacional, sino que aporta la telemetría necesaria para fundamentar el rediseño y la optimización continua de la infraestructura.</p>
 
 ### 6.2 Reflexión Personal del Estudiante (Requisito Individual Obligatorio)
 
-Durante este semestre, mi mayor desafío de aprendizaje estuvo centrado en asimilar y retener la teoría compleja detrás de los sistemas de Inteligencia Artificial: desde el funcionamiento matemático de los embeddings y las búsquedas por similitud vectorial, hasta los mecanismos de control de la ventana de contexto y el modelamiento de la planificación del agente. Ante las dificultades que experimenté para retener y procesar estos tecnicismos teóricos a la par del avance del semestre, utilicé las herramientas de IA como un andamiaje cognitivo. El asistente actuó como un tutor dinámico y personalizado que me ayudó a digerir la física de los modelos y a estructurar el flujo lógico de la solución, adaptándose a mis propios ritmos de aprendizaje y comprensión.
+**Reflexión Académica del Alumno (Análisis Conceptual de la Solución de IA):**
+<p style="text-align: justify;">Durante el desarrollo de este proyecto semestral, mi aprendizaje se centró en asimilar el modelamiento conceptual de las soluciones inteligentes y la interacción semántica de los modelos de lenguaje. Comprender el funcionamiento matemático de los embeddings vectoriales (modelo <code>all-MiniLM-L6-v2</code>) y la lógica matemática de similitud de coseno para la recuperación de contexto RAG me demostró que el éxito del procesamiento de lenguaje natural radica en el anclaje estructurado de la información y no en el simple procesamiento de palabras clave.</p>
 
-<p style="text-align: justify;">Esta metodología me permitió concentrarme en lo fundamental de la asignatura: la conceptualización estratégica de una solución de IA para un caso de negocio. Comprendí que el éxito de un sistema inteligente no consiste en dejar que un modelo responda libremente, sino en diseñar un anclaje de datos estricto (RAG) para erradicar alucinaciones operativas y establecer métricas de observabilidad en tiempo real que nos permitan auditar su precisión. De esta forma, el uso del asistente me sirvió como una herramienta de inclusión y nivelación técnica, permitiéndome consolidar el diseño del agente y entender el comportamiento de los modelos de lenguaje en entornos reales.</p>
+<p style="text-align: justify;">Asimismo, el estudio del paradigma de planificación ReAct (Reasoning and Acting) y la configuración de una ventana de contexto controlada (memory $k=10$) me permitieron comprender cómo dirigir y preprogramar las intenciones de un LLM de forma segura. Descubrí que la clave para la viabilidad de un agente en un negocio real es mitigar las alucinaciones limitando estrictamente el prompt del sistema (Context Bounding) y estableciendo una suite de auditoría externa y telemetría en tiempo real (JSON Lines + LLM-as-a-Judge) que califique de forma autónoma la veracidad del sistema cognitivo.</p>
 
 ---
 
@@ -210,17 +195,15 @@ Durante este semestre, mi mayor desafío de aprendizaje estuvo centrado en asimi
 
 <ul>
     <li style="text-align: justify; margin-bottom: 8px;"><strong>Herramienta Utilizada</strong>: Antigravity AI Coding Assistant (basado en Gemini 3.5 Flash).</li>
-    <li style="text-align: justify; margin-bottom: 8px;"><strong>Concepto de Aplicación (Andamiaje Cognitivo)</strong>: Se declara el uso de la IA como un soporte asistencial y de accesibilidad adaptativa para la traducción, redacción y estructuración técnica del entregable. El asistente actuó como un andamiaje para la aplicación de sintaxis compleja y modelamiento de datos, facilitando al alumno centrarse en el diseño estratégico del flujo inteligente de la solución sin delegar el análisis de las problemáticas del negocio.</li>
-    <li style="text-align: justify; margin-bottom: 8px;"><strong>Modelamiento del Agente y RAG</strong>: Se utilizó el asistente para codificar las plantillas de prompts de ALI (Agente de Logística Inteligente), la lógica de recuperación de políticas desde ChromaDB (RAG), y el comportamiento dinámico de los planificadores lógicos.</li>
-    <li style="text-align: justify; margin-bottom: 8px;"><strong>Suite de Observabilidad y Soporte Tecnológico</strong>: Se contó con asistencia para estructurar el registro de trazas en formato JSON Lines, configurar la métrica de precisión del Juez evaluador, y dar soporte en la construcción de los scripts de ejecución e interfaces de monitoreo asociadas al agente.</li>
-    <li style="text-align: justify; margin-bottom: 8px;"><strong>Documentación y Diagramas</strong>: Se empleó la IA como apoyo para la corrección ortográfica del informe, la organización del formato en Markdown, la inserción de hipervínculos de navegabilidad en el notebook, y la generación de los diagramas conceptuales de secuencia en formato Mermaid.</li>
-    <li style="text-align: justify; margin-bottom: 8px;"><strong>Originalidad y Validación</strong>: La definición y formulación de la problemática de inventario, las fórmulas de ROP y EOQ, y las decisiones del diseño inteligente de la solución ante variables de estacionalidad clima-inventario fueron lideradas y validadas de forma individual por el alumno, asegurando su correcto comportamiento y veracidad de datos en el entorno local.</li>
+    <li style="text-align: justify; margin-bottom: 8px;"><strong>Lógica del Agente e Ingesta RAG</strong>: Se utilizó el asistente para el desarrollo inicial de los prompts lógicos, las funciones de búsqueda semántica RAG sobre ChromaDB, y la integración de las herramientas lógicas del agente (weather, inventory, trends).</li>
+    <li style="text-align: justify; margin-bottom: 8px;"><strong>Estructuración de Trazas y Telemetría</strong>: Se contó con soporte para la programación de la persistencia de logs en formato JSON Lines, el cálculo de latencia de cómputo y la configuración del Juez de validación automatizada en tiempo real.</li>
+    <li style="text-align: justify; margin-bottom: 8px;"><strong>Documentación y Soporte</strong>: Se empleó la herramienta como copiloto para la diagramación Mermaid de secuencia de componentes y la corrección gramatical de los archivos Markdown del portafolio.</li>
 </ul>
 
 ---
 
 ## 8. Referencias (APA)
 
-* Martin, R. C. (2012). *Clean Architecture: A Craftsman's Guide to Software Structure and Design*. Prentice Hall.
-* LangChain Community. (2024). *Retrieval-Augmented Generation (RAG) Conceptual Documentation*. Recuperado de https://js.langchain.com/docs/concepts/rag
-* Reimers, N., & Gurevych, I. (2019). Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. *arXiv preprint arXiv:1908.10084*.
+*   Martin, R. C. (2012). *Clean Architecture: A Craftsman's Guide to Software Structure and Design*. Prentice Hall.
+*   LangChain Community. (2024). *Retrieval-Augmented Generation (RAG) Conceptual Documentation*. Recuperado de https://js.langchain.com/docs/concepts/rag
+*   Reimers, N., & Gurevych, I. (2019). Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. *arXiv preprint arXiv:1908.10084*.
