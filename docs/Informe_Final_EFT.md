@@ -22,9 +22,9 @@
 ### 2.1 Formulación y Optimización de Prompts
 <p style="text-align: justify;">Para garantizar la precisión de las respuestas del agente, se definió un prompt de sistema estructurado para el agente en [backend/src/application/agent.py](../backend/src/application/agent.py) que delimita sus fronteras de acción:</p>
 
-*   **Role-prompting**: Identifica al agente como "ALI" (Agente de Logística Inteligente).
-*   **Context Bounding**: Restringe las respuestas exclusivamente a la base de datos local SQLite y los fragmentos RAG. Si los datos no existen en el contexto, el agente debe responder: "No dispongo de esa información".
-*   **Fórmulas Obligatorias**: Exige aplicar de forma estricta las reglas logísticas corporativas (Punto de Reorden - ROP, y Cantidad Económica de Pedido - EOQ) recuperadas vía RAG.
+*   <p style="text-align: justify;">**Role-prompting**: Identifica al agente como "ALI" (Agente de Logística Inteligente).</p>
+*   <p style="text-align: justify;">**Context Bounding**: Restringe las respuestas exclusivamente a la base de datos local SQLite y los fragmentos RAG. Si los datos no existen en el contexto, el agente debe responder: "No dispongo de esa información".</p>
+*   <p style="text-align: justify;">**Fórmulas Obligatorias**: Exige aplicar de forma estricta las reglas logísticas corporativas (Punto de Reorden - ROP, y Cantidad Económica de Pedido - EOQ) recuperadas vía RAG.</p>
 
 ### 2.2 Implementación de Pipelines RAG
 <p style="text-align: justify;">El pipeline RAG para datos no estructurados de políticas corporativas está implementado en:</p>
@@ -101,19 +101,19 @@ graph TD
 <p style="text-align: justify;">Para que el agente de logística sea viable en un entorno real de producción, se diseñó un manager de telemetría en [backend/src/infrastructure/observability.py](../backend/src/infrastructure/observability.py) que captura cuatro métricas clave por cada turno de conversación, guardando las trazas estructuradas en el archivo [data/agent_observability.jsonl](../data/agent_observability.jsonl):</p>
 
 1.  **Latencia de Respuesta (Segundos)**:
-    *   <p style="text-align: justify;">*Justificación:* En el comercio minorista, la velocidad operativa es crítica. Un agente logístico que tarda más de 30 segundos en responder causa frustración y provoca que los jefes de local abandonen la herramienta para volver a métodos manuales. El monitoreo de latencia permite identificar qué APIs externas (como el clima) representan cuellos de botella para el negocio.</p>
+    *   <p style="text-align: justify;">**Justificación**: En el comercio minorista, la velocidad operativa es crítica. Un agente logístico que tarda más de 30 segundos en responder causa frustración y provoca que los jefes de local abandonen la herramienta para volver a métodos manuales. El monitoreo de latencia permite identificar qué APIs externas (como el clima) representan cuellos de botella para el negocio.</p>
 2.  **Tasa de Errores (Éxitos / Fallas)**:
-    *   <p style="text-align: justify;">*Justificación:* Mide la fiabilidad del agente. Un fallo en el sistema conversacional puede impedir la generación de una orden de reposición de emergencia, provocando quiebres de stock físicos.</p>
+    *   <p style="text-align: justify;">**Justificación**: Mide la fiabilidad del agente. Un fallo en el sistema conversacional puede impedir la generación de una orden de reposición de emergencia, provocando quiebres de stock físicos.</p>
 3.  **Consumo de Recursos (Tokens y Herramientas Usadas)**:
-    *   <p style="text-align: justify;">*Justificación:* El uso ineficiente de tokens en APIs pagadas de LLM eleva significativamente los costos operacionales cuando la solución se escala a nivel nacional. Monitorear los tokens consumidos y las herramientas invocadas permite ajustar el tamaño de la memoria de conversación y evaluar el ROI financiero del sistema.</p>
+    *   <p style="text-align: justify;">**Justificación**: El uso ineficiente de tokens en APIs pagadas de LLM eleva significativamente los costos operacionales cuando la solución se escala a nivel nacional. Monitorear los tokens consumidos y las herramientas invocadas permite ajustar el tamaño de la memoria de conversación y evaluar el ROI financiero del sistema.</p>
 4.  **Precisión (LLM-as-a-Judge)**:
-    *   <p style="text-align: justify;">*Justificación:* En logística, un error de cálculo se traduce en dinero inmovilizado (sobreinventario) o pérdidas comerciales (desabastecimiento). El evaluador Juez (Gemini) contrasta en tiempo real la respuesta final del agente contra la base de datos relacional y las fórmulas corporativas del RAG, otorgando una calificación de precisión de 0 a 100 e identificando alucinaciones de forma automática.</p>
+    *   <p style="text-align: justify;">**Justificación**: En logística, un error de cálculo se traduce en dinero inmovilizado (sobreinventario) o pérdidas comerciales (desabastecimiento). El evaluador Juez (Gemini) contrasta en tiempo real la respuesta final del agente contra la base de datos relacional y las fórmulas corporativas del RAG, otorgando una calificación de precisión de 0 a 100 e identificando alucinaciones de forma automática.</p>
 
 ### 4.2 Trazabilidad de Logs y Análisis de Datos
 <p style="text-align: justify;">Los logs son leídos y consolidados en tiempo real por el dashboard implementado en [backend/dashboard.py](../backend/dashboard.py).</p>
 
-*   <p style="text-align: justify;">*Hallazgo clave:* Los datos de observabilidad evidenciaron que la API externa del clima representaba el 60% de la latencia total del agente (promedio de 2.5 segundos de retraso por llamada).</p>
-*   <p style="text-align: justify;">*Propuesta de Rediseño:* Diseñar un almacenamiento en caché local de 6 horas para el clima, y un módulo local de enrutamiento semántico (Semantic Routing) para responder interacciones cotidianas sin consumir llamadas de LLM externas.</p>
+*   <p style="text-align: justify;">**Hallazgo clave**: Los datos de observabilidad evidenciaron que la API externa del clima representaba el 60% de la latencia total del agente (promedio de 2.5 segundos de retraso por llamada).</p>
+*   <p style="text-align: justify;">**Propuesta de Rediseño**: Diseñar un almacenamiento en caché local de 6 horas para el clima, y un módulo local de enrutamiento semántico (Semantic Routing) para responder interacciones cotidianas sin consumir llamadas de LLM externas.</p>
 
 ### 4.3 Propuestas de Experimentos Futuros
 <p style="text-align: justify;">Para consolidar la mejora del sistema, se proponen tres experimentos técnicos estructurados:</p>
@@ -176,10 +176,10 @@ graph TD
 <p style="text-align: justify;">De acuerdo con las políticas del uso ético de Inteligencia Artificial de Duoc UC, se declara de forma transparente el uso de asistentes de IA en las siguientes dimensiones del proyecto:</p>
 
 *   **Herramienta Utilizada**: Antigravity AI Coding Assistant (basado en Gemini 3.5 Flash).
-*   **Desarrollo de Software y Aplicaciones**: <p style="text-align: justify;">Se utilizó el asistente como copiloto de programación para estructurar el backend en FastAPI (main.py), la integración de CORS, la configuración de las rutas de servicio y adaptadores de bases de datos. Asimismo, se utilizó para la estructuración del frontend interactivo en React (Vite) y el diseño del panel de control de Streamlit, incluyendo la integración de gráficos de Plotly.</p>
-*   **Lógica del Agente e Infraestructura**: <p style="text-align: justify;">Se contó con asistencia de IA en la programación inicial de las herramientas (tools) de LangChain, el TripleFallbackLLMProvider, los módulos de planificación dinámica en planner.py, y la estructuración del archivo de observabilidad agent_observability.jsonl.</p>
+*   **Desarrollo de Software y Aplicaciones**: <p style="text-align: justify;">Se utilizó el asistente como copiloto de programación para configurar el backend en FastAPI (main.py), la integración de CORS, la definición de las rutas de servicio y los adaptadores de bases de datos. Asimismo, se utilizó para la estructuración de la aplicación frontend en React (Vite) y el diseño del panel de observabilidad en Streamlit con gráficos de Plotly.</p>
+*   **Lógica del Agente e Infraestructura**: <p style="text-align: justify;">Se contó con asistencia de IA en la programación inicial de las herramientas (tools) de LangChain, el TripleFallbackLLMProvider, los módulos de planificación en planner.py, y la estructuración del archivo de observabilidad agent_observability.jsonl.</p>
 *   **Redacción y Diagramación**: <p style="text-align: justify;">Se empleó la IA como apoyo para la corrección gramatical de la documentación, la organización del formato Markdown, la creación de diagramas de secuencia y flujo en formato Mermaid, y la inserción de enlaces de navegabilidad en el notebook de observabilidad.</p>
-*   **Originalidad y Validación**: <p style="text-align: justify;">La definición conceptual del problema logístico, la elección estratégica de Clean Architecture, las decisiones de diseño ante variables de estacionalidad clima-inventario, y la posterior revisión y validación exhaustiva de todo el código generado fueron lideradas y ejecutadas por el equipo del proyecto, asegurando su correcto funcionamiento local.</p>
+*   **Originalidad y Validación**: <p style="text-align: justify;">La definición conceptual del problema logístico, la elección estratégica de Clean Architecture, las decisiones de diseño ante variables de estacionalidad clima-inventario, y la posterior revisión y validación de todo el código generado fueron lideradas y ejecutadas por el equipo del proyecto, asegurando su correcto funcionamiento local.</p>
 
 ---
 
