@@ -163,10 +163,12 @@ La evolucion de la solucion a lo largo del semestre permitio contrastar los para
 
 ## 7. Declaracion de Uso de Asistentes de Inteligencia Artificial
 
-De acuerdo con las politicas del uso etico de Inteligencia Artificial de Duoc UC, se declara lo siguiente respecto al desarrollo de este entregable:
+De acuerdo con las politicas del uso etico de Inteligencia Artificial de Duoc UC, se declara de forma transparente el uso de asistentes de IA en las siguientes dimensiones del proyecto:
 *   **Herramienta Utilizada**: Antigravity AI Coding Assistant (basado en Gemini 3.5 Flash).
-*   **Metodo de Aplicacion**: Se utilizo la herramienta exclusivamente como asistente de apoyo de ingenieria para la correccion gramatical de la documentacion, la diagramacion estructurada del flujo del sistema en Mermaid, la organizacion del formato Markdown, y la insercion de enlaces de navegabilidad en el notebook de observabilidad.
-*   **Originalidad**: Todas las ideas, analisis comparativos, disenos de bases de datos relacionales y vectoriales, y la implementacion de las herramientas y planificadores en Python son de autoría propia del equipo del proyecto.
+*   **Desarrollo de Software y Aplicaciones**: Se utilizo el asistente como copiloto de programacion para estructurar el backend en FastAPI (main.py), la integracion de CORS, la configuracion de las rutas de servicio y adaptadores de bases de datos. Asi mismo, se utilizo para la estructuracion del frontend interactivo en React (Vite) y el diseno del panel de control de Streamlit, incluyendo la integracion de graficos de Plotly.
+*   **Logica del Agente e Infraestructura**: Se conto con asistencia de IA en la programacion inicial de las herramientas (tools) de LangChain, el TripleFallbackLLMProvider, los modulos de planificacion dinamica en planner.py, y la estructuracion del archivo de observabilidad agent_observability.jsonl.
+*   **Redaccion y Diagramacion**: Se empleo la IA como apoyo para la correccion gramatical de la documentacion, la organizacion del formato Markdown, la creacion de diagramas de secuencia y flujo en formato Mermaid, y la insercion de enlaces de navegabilidad en el notebook de observabilidad.
+*   **Originalidad y Validacion**: La definicion conceptual del problema logístico, la eleccion estrategica de Clean Architecture, las decisiones de diseno ante variables de estacionalidad clima-inventario, y la posterior revision y validacion exhaustiva de todo el codigo generado fueron lideradas y ejecutadas por el equipo del proyecto, asegurando su correcto funcionamiento local.
 
 ---
 
