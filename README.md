@@ -63,4 +63,4 @@ PYTHONPATH=. python scripts/demo_rag.py --query "¿Cuál es la política para qu
 
 ## Documentación
 El informe técnico completo con la justificación del diseño, formulación de prompts y arquitectura se encuentra disponible en:
-*   [Informe Técnico EP1 (Markdown)](file:///Users/user/Desktop/SolucionesIA/SolucionesIA/docs/Informe_Tecnico_Ev1.md)
+*   [Informe Técnico EP1 (Markdown)](docs/Informe_Tecnico_Ev1.md)
